@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 class Register extends React.Component {
     state = {
+        username: '',
         email: '',
         password: '',
         confirmPassword: ''
@@ -41,6 +42,15 @@ class Register extends React.Component {
                     <h2 className='text-center'>REGISTER</h2>
                     <form className='form-group'>
 
+                        <input
+                            name='username'
+                            type='text'
+                            id='username'
+                            placeholder='Username'
+                            value={this.state.username}
+                            onChange={this.handleChange}
+                            required
+                        />
                         <input
                             name='email'
                             type='email'
