@@ -117,3 +117,9 @@ body h2{
   border-radius: 5px;
   cursor: pointer;
 }
+
+.error-message{
+  font-size: 10px;
+  color: #A82122;
+  margin: 0px 20px;
+}

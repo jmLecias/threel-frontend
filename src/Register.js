@@ -7,28 +7,44 @@ class Register extends React.Component {
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+        errors: {
+            email: '',
+            username: '',
+            password: '',
+            confirmPassword: '',
+        },
     };
 
     handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        const field = event.target.name;
+        this.setState((prevState) => ({
+            [field]: event.target.value,
+            errors: {
+                ...prevState.errors,
+                [field]: '',
+            }
+        }));
     };
 
     handleSubmit = (event) => {
         event.preventDefault();
+        console.log(this.state);
         threel_api.post('/auth/register', {
             email: this.state.email,
-            password: this.state.password
-        })
-            .then(response => {
-                console.log(`User registered`);
-                alert("User registered successfully!");
-            })
-            .catch(error => {
-                console.error(error);
+            username: this.state.username,
+            password: this.state.password,
+            password_confirmation: this.state.confirmPassword
+        }).then(response => {
+            console.log(`User registered`);
+            console.log(response);
+            alert("User registered successfully!");
+        }).catch(error => {
+            console.error(error.response.data.errors);
+            this.setState({
+                errors: error.response.data.errors,
             });
+        });
     };
 
 
@@ -41,7 +57,6 @@ class Register extends React.Component {
                 <div className="registerContainer mx-auto my-auto">
                     <h2 className='text-center'>REGISTER</h2>
                     <form className='form-group'>
-
                         <input
                             name='username'
                             type='text'
@@ -51,6 +66,9 @@ class Register extends React.Component {
                             onChange={this.handleChange}
                             required
                         />
+                        {this.state.errors.username && (
+                            <div className="error-message">{this.state.errors.username[0]}</div>
+                        )}
                         <input
                             name='email'
                             type='email'
@@ -60,6 +78,9 @@ class Register extends React.Component {
                             onChange={this.handleChange}
                             required
                         />
+                        {this.state.errors.email && (
+                            <div className="error-message">{this.state.errors.email[0]}</div>
+                        )}
                         <input
                             name='password'
                             id='password'
@@ -67,8 +88,13 @@ class Register extends React.Component {
                             placeholder='Password'
                             value={this.state.password}
                             onChange={this.handleChange}
+                            minLength="8"
                             required
                         />
+                        {this.state.errors.password && (
+                            <div className="error-message">{this.state.errors.password[0]}</div>
+                        )}
+
                         <input
                             name='confirmPassword'
                             id='confirm-password'
@@ -76,8 +102,14 @@ class Register extends React.Component {
                             placeholder='Confirm Password'
                             value={this.state.confirmPassword}
                             onChange={this.handleChange}
+                            minLength="8"
                             required
                         />
+                        {this.state.errors.password_confirmation && (
+                            <div className="error-message">
+                                {this.state.errors.password_confirmation[0]}
+                            </div>
+                        )}
 
                         <p className='mx-auto'>Already have an Account? <Link to="/login">Login Now!</Link></p>
 
