@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Login from './Login';
 import Register from './Register';
+import Player from './Player';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/player" element={<Player />} /> {/* Testing only */}
       </Routes>
     </Router>
   );

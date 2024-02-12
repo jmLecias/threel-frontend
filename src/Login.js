@@ -1,74 +1,96 @@
-import React from 'react';
+import React, { useState } from 'react';
 import threel_api from './api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-class Login extends React.Component {
-    state = {
+function Login() {
+    const navigate = useNavigate();
+
+    const [state, setState] = useState({
         email: '',
-        password: ''
+        password: '',
+        errors: {
+            email: '',
+            password: '',
+        },
+    });
+
+    const handleChange = (event) => {
+        const field = event.target.name;
+        setState((prevState) => ({
+            ...prevState,
+            [field]: event.target.value,
+            errors: {
+                ...prevState.errors,
+                [field]: '',
+            }
+        }));
     };
 
-    handleChange = (event) => {
-        this.setState({
-            [event.target.name]: event.target.value
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(state);
+        threel_api.post('/auth/login', {
+            email: state.email,
+            password: state.password
+        }).then(response => {
+            console.log(`User authenticated`);
+            console.log(response);
+            alert("User login successful!");
+
+            navigate("/player");
+        }).catch(error => {
+            console.error(error);
+            setState(prevState => ({
+                ...prevState,
+                errors: error.response.data.errors,
+            }));
         });
     };
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        threel_api.post('/auth/login', {
-            email: this.state.email,
-            password: this.state.password
-        })
-            .then(response => {
-                console.log(`User authenticated`);
-                alert("User login successful!");
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    };
 
 
 
+    return (
+        <div className="App">
+            <h1 className='text-center'>THREEL</h1>
+            <div className="registerContainer mx-auto my-auto">
+                <h2 className='text-center'>LOGIN</h2>
+                <form className='form-group'>
 
-    render() {
-        return (
-            <div className="App">
-                <h1 className='text-center'>THREEL</h1>
-                <div className="registerContainer mx-auto my-auto">
-                    <h2 className='text-center'>LOGIN</h2>
-                    <form className='form-group'>
+                    <input
+                        name='email'
+                        type='email'
+                        id='email'
+                        placeholder='Email'
+                        value={state.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    {state.errors.email && (
+                        <div className="error-message">{state.errors.email[0]}</div>
+                    )}
+                    <input
+                        name='password'
+                        id='password'
+                        type='password'
+                        placeholder='Password'
+                        value={state.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    {state.errors.password && (
+                        <div className="error-message">{state.errors.password[0]}</div>
+                    )}
 
-                        <input
-                            name='email'
-                            type='email'
-                            id='email'
-                            placeholder='Email'
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                            required
-                        />
-                        <input
-                            name='password'
-                            id='password'
-                            type='password'
-                            placeholder='Password'
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            required
-                        />
+                    <p className='mx-auto'>Don't have an Account?  <Link to="/">Register Here!</Link></p>
 
-                        <p className='mx-auto'>Don't have an Account?  <Link to="/">Register Here!</Link></p>
-
-                        <div className='mx-auto'>
-                            <button type="submit" className="registerButton" onClick={this.handleSubmit}>Log in</button>
-                        </div>
-                    </form>
-                </div>
+                    <div className='mx-auto'>
+                        <button className="registerButton" onClick={handleSubmit}>Log in</button>
+                    </div>
+                </form>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default Login;
