@@ -82,7 +82,7 @@ function Login() {
                         <div className="error-message">{state.errors.password[0]}</div>
                     )}
 
-                    <p className='mx-auto'>Don't have an Account?  <Link to="/">Register Here!</Link></p>
+                    <p className='mx-auto'>Don't have an Account?  <Link to="/register">Register Here!</Link></p>
 
                     <div className='mx-auto'>
                         <button className="registerButton" onClick={handleSubmit}>Log in</button>

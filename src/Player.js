@@ -1,9 +1,26 @@
 import React from 'react';
 import threel_api from './api';
+import { useNavigate } from 'react-router-dom';
 
-function Player(){
-    return(
-        <div className = "App" >
+
+function Player() {
+    const navigate = useNavigate();
+
+    const handleLogout = (event) => {
+        event.preventDefault();
+        threel_api.post('logout')
+            .then(() => {
+                console.log("Logged out")
+                alert("Successfully logged out!");
+                navigate("/player");
+            })
+            .catch(error => {
+                console.error(error.response);
+            });
+        navigate("/login");
+    }
+    return (
+        <div className="App" >
             <header>
                 <div className="header-logo">
                     <div>
@@ -20,6 +37,9 @@ function Player(){
                             <li><a href="#">Logout</a></li>
                         </ul>
                     </div>
+                    <button className="registerButton" onClick={handleLogout}>
+                        Logout
+                    </button>
                 </div>
             </header>
 
