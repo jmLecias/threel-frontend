@@ -8,16 +8,20 @@ function Player() {
 
     const handleLogout = (event) => {
         event.preventDefault();
-        threel_api.post('logout')
-            .then(() => {
-                console.log("Logged out")
-                alert("Successfully logged out!");
-                navigate("/player");
-            })
-            .catch(error => {
-                console.error(error.response);
-            });
-        navigate("/login");
+        threel_api.post('/logout').then(() => {
+            navigate("/login");
+            alert("Successfully logged out!");
+        }).catch(error => {
+            console.error(error.response);
+        });
+    }
+    const handleMe = (event) => {
+        event.preventDefault();
+        threel_api.post('/me').then((response) => {
+            alert("Hello you are "+ response.data.name);
+        }).catch(error => {
+            console.error(error.response);
+        });
     }
     return (
         <div className="App" >
@@ -39,6 +43,9 @@ function Player() {
                     </div>
                     <button className="registerButton" onClick={handleLogout}>
                         Logout
+                    </button>
+                    <button className="registerButton" onClick={handleMe}>
+                        Who am I?
                     </button>
                 </div>
             </header>

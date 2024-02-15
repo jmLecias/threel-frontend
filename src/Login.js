@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import threel_api from './api';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthenticationService from './AuthenticationService';
 
 function Login() {
     const navigate = useNavigate();
+    const auth = new AuthenticationService();
 
     const [state, setState] = useState({
         email: '',
@@ -28,27 +29,19 @@ function Login() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(state);
-        threel_api.post('/auth/login', {
+        const credentials = {
             email: state.email,
             password: state.password
-        }).then(response => {
-            console.log(`User authenticated`);
-            console.log(response);
-            alert("User login successful!");
+        }
 
-            navigate("/player");
+        auth.login(credentials).then(isLoggedIn => {
+            if(isLoggedIn) {
+                navigate("/player");
+            }
         }).catch(error => {
-            console.error(error);
-            setState(prevState => ({
-                ...prevState,
-                errors: error.response.data.errors,
-            }));
+            alert("Error logging in" + error);   
         });
     };
-
-
-
 
     return (
         <div className="App">

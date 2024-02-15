@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import threel_api from './api';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthenticationService from './AuthenticationService';
+
 
 function Register() {
     const navigate = useNavigate();
+    const auth = new AuthenticationService();
 
     const [state, setState] = useState({
         name: '',
@@ -34,35 +37,20 @@ function Register() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(state);
-        threel_api.post('/auth/register', {
+
+        const credentials = {
             email: state.email,
             name: state.name,
             username: state.username,
             password: state.password,
             password_confirmation: state.confirmPassword
-        }).then(response => {
-            console.log(`User registered`);
-            alert("User registered successfully!");
-            console.log(response);
-            setState({
-                name: '',
-                username: '',
-                email: '',
-                password: '',
-                confirmPassword: '',
-                errors: {
-                    name: '',
-                    email: '',
-                    username: '',
-                    password: '',
-                    confirmPassword: '',
-                },
-            });
+        }
 
-            navigate("/player");
+        auth.register(credentials).then(isLoggedIn => {
+            if(isLoggedIn) {
+                navigate("/player");
+            }
         }).catch(error => {
-            console.error(error.response.data.errors);
             setState(prevState => ({
                 ...prevState,
                 errors: error.response.data.errors,
