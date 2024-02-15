@@ -1,7 +1,7 @@
 import React from 'react';
 import threel_api from './api';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 function Player() {
     const navigate = useNavigate();
@@ -10,17 +10,18 @@ function Player() {
         event.preventDefault();
         threel_api.post('logout')
             .then(() => {
-                console.log("Logged out")
-                alert("Successfully logged out!");
-                navigate("/player");
             })
             .catch(error => {
                 console.error(error.response);
             });
-        navigate("/login");
+            toast.success("Logged Out", {
+                autoClose:  500,
+                onClose: () => navigate("/login")
+              });
     }
     return (
         <div className="App" >
+            <ToastContainer />
             <header>
                 <div className="header-logo">
                     <div>
