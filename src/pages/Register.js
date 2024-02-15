@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
-import threel_api from './api';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthenticationService from './AuthenticationService';
+import { useAuth } from "../hooks/useAuth";
 
 
 function Register() {
     const navigate = useNavigate();
-    const auth = new AuthenticationService();
+    const { register } = useAuth();
 
     const [state, setState] = useState({
         name: '',
@@ -46,16 +45,19 @@ function Register() {
             password_confirmation: state.confirmPassword
         }
 
-        auth.register(credentials).then(isLoggedIn => {
-            if(isLoggedIn) {
-                navigate("/player");
-            }
-        }).catch(error => {
-            setState(prevState => ({
-                ...prevState,
-                errors: error.response.data.errors,
-            }));
-        });
+        register(credentials);
+
+        // auth.register(credentials).then(isRegistered => {
+        //     if(isRegistered) {
+        //         navigate("/player");
+        //     }
+        // }).catch(error => {
+        //     alert("Error registering: " + error);   
+        //     setState(prevState => ({
+        //         ...prevState,
+        //         errors: error.response.data.errors,
+        //     }));
+        // });
     };
 
 

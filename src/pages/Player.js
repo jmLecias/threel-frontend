@@ -1,30 +1,28 @@
 import React from 'react';
-import threel_api from './api';
+import threel_api from '../backend/api';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import { useAuth } from "../hooks/useAuth";
+import AuthenticationService from '../services/AuthenticationService';
 
 function Player() {
     const navigate = useNavigate();
+    const auth = new AuthenticationService();
+    const { logout } = useAuth();
 
     const handleLogout = (event) => {
         event.preventDefault();
-        threel_api.post('/logout').then(() => {
-            navigate("/login");
-            alert("Successfully logged out!");
-        }).catch(error => {
-            console.error(error.response);
-        });
+        logout();
     }
     const handleMe = (event) => {
         event.preventDefault();
-        threel_api.post('/me').then((response) => {
-            alert("Hello you are "+ response.data.name);
-        }).catch(error => {
-            console.error(error.response);
-        });
+        const user_name = JSON.parse(auth.getUser()).original.name;
+        alert(" Hello! You are "+user_name);
+        console.log(user_name);
     }
     return (
         <div className="App" >
+            <ToastContainer />
             <header>
                 <div className="header-logo">
                     <div>
@@ -34,7 +32,7 @@ function Player() {
                 </div>
 
                 <div className="header-actions">
-                    <h1 className="username-actions">Username</h1>
+                    <h1 className="username-actions">{JSON.parse(auth.getUser()).original.name}</h1>
                     <div className="user-dropdown">
                         <ul>
                             <li><a href="#">Profile</a></li>

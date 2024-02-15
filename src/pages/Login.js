@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthenticationService from './AuthenticationService';
+import { ToastContainer, toast } from 'react-toastify';
+import { useAuth } from "../hooks/useAuth";
 
 function Login() {
+    const { login } = useAuth();
     const navigate = useNavigate();
-    const auth = new AuthenticationService();
 
     const [state, setState] = useState({
-        email: '',
+        email: '',  
         password: '',
         errors: {
             email: '',
@@ -34,13 +35,7 @@ function Login() {
             password: state.password
         }
 
-        auth.login(credentials).then(isLoggedIn => {
-            if(isLoggedIn) {
-                navigate("/player");
-            }
-        }).catch(error => {
-            alert("Error logging in" + error);   
-        });
+        login(credentials);
     };
 
     return (
