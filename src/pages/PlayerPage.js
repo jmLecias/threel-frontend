@@ -1,5 +1,4 @@
 import React from 'react';
-import threel_api from '../backend/api';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../hooks/useAuth";
@@ -8,17 +7,24 @@ import AuthenticationService from '../services/AuthenticationService';
 function Player() {
     const navigate = useNavigate();
     const auth = new AuthenticationService();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
 
     const handleLogout = (event) => {
         event.preventDefault();
         logout();
+        toast.info("Logged out", {
+            autoClose:  1000,
+            pauseOnHover: true,
+        });
     }
     const handleMe = (event) => {
         event.preventDefault();
-        const user_name = JSON.parse(auth.getUser()).original.name;
-        alert(" Hello! You are "+user_name);
-        console.log(user_name);
+        const name = JSON.parse(auth.getUser()).original.name;
+        toast.info("Hello! You are "+name, {
+            position: "bottom-right",
+            autoClose:  1000,
+            pauseOnHover: true,
+        });
     }
     return (
         <div className="App" >
@@ -31,13 +37,13 @@ function Player() {
                     <h1>THREEL</h1>
                 </div>
 
-                <div className="header-actions">
+                <div className="header-actions mx-auto my-auto">
                     <h1 className="username-actions">{JSON.parse(auth.getUser()).original.name}</h1>
                     <div className="user-dropdown">
-                        <ul>
+                        {/* <ul>
                             <li><a href="#">Profile</a></li>
                             <li><a href="#">Logout</a></li>
-                        </ul>
+                        </ul> */}
                     </div>
                     <button className="registerButton" onClick={handleLogout}>
                         Logout
@@ -48,7 +54,7 @@ function Player() {
                 </div>
             </header>
 
-            <nav>
+            {/* <nav>
                 <div className="btn-explore">
                     <div style={{ marginRight: '15px', marginTop: '5px' }}>
                         <img src="images/icon-trending.png" alt="icon-explore" />
@@ -63,9 +69,9 @@ function Player() {
                     <li><a href="#">Songs</a></li>
                     <li><a href="#">Profile</a></li>
                 </ul>
-            </nav>
+            </nav> */}
 
-            <main>
+            {/* <main>
                 <div className="media-player">
                     <video width="100%" height="100%" style={{ borderRadius: '10px' }} controls autoPlay>
                         <source src="videos/AquaintanceIntroVideo.mp4" type="video/mp4" />
@@ -118,7 +124,7 @@ function Player() {
                         sunt in culpa qui officia deserunt mollit anim id est laborum.
                     </p>
                 </div>
-            </aside>
+            </aside> */}
         </div>
     );
 }

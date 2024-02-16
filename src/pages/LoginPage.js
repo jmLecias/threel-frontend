@@ -7,6 +7,8 @@ function Login() {
     const { login } = useAuth();
     const navigate = useNavigate();
 
+    const [loader, loaderOn] = useState("Log in");
+
     const [state, setState] = useState({
         email: '',  
         password: '',
@@ -35,11 +37,27 @@ function Login() {
             password: state.password
         }
 
-        login(credentials);
+        loaderOn("Logging in...");
+
+        login(credentials).then((isLoggedIn) => {
+            if(isLoggedIn === true) {
+                navigate("/home", {replace: true});
+                loaderOn("Log in");
+            }
+        }).catch((error) => {
+            loaderOn("Log in");
+            toast.error("Login error!\n", {
+                autoClose:  3000,
+                pauseOnHover: true,
+            });
+        }); 
+
+        
     };
 
     return (
         <div className="App">
+            <ToastContainer />
             <h1 className='text-center'>THREEL</h1>
             <div className="registerContainer mx-auto my-auto">
                 <h2 className='text-center'>LOGIN</h2>
@@ -73,7 +91,11 @@ function Login() {
                     <p className='mx-auto'>Don't have an Account?  <Link to="/register">Register Here!</Link></p>
 
                     <div className='mx-auto'>
-                        <button className="registerButton" onClick={handleSubmit}>Log in</button>
+                        <button 
+                            className="registerButton" 
+                            onClick={handleSubmit} 
+                            disabled={loader === "Logging in..."}
+                        >{loader}</button>
                     </div>
                 </form>
             </div>

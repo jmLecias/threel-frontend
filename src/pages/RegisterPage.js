@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../hooks/useAuth";
 
 
 function Register() {
     const navigate = useNavigate();
     const { register } = useAuth();
+
+    const [loader, loaderOn] = useState("Register");
 
     const [state, setState] = useState({
         name: '',
@@ -45,24 +48,36 @@ function Register() {
             password_confirmation: state.confirmPassword
         }
 
-        register(credentials);
+        loaderOn("Registering...");
 
-        // auth.register(credentials).then(isRegistered => {
-        //     if(isRegistered) {
-        //         navigate("/player");
-        //     }
-        // }).catch(error => {
-        //     alert("Error registering: " + error);   
-        //     setState(prevState => ({
-        //         ...prevState,
-        //         errors: error.response.data.errors,
-        //     }));
-        // });
+        register(credentials).then((isRegistered) => {
+            if (isRegistered === true) {
+                toast.success("Register successful", {
+                    autoClose: 500,
+                    pauseOnHover: true,
+                    onClose: () => {
+                        navigate("/home", { replace: true });
+                        loaderOn("Register");
+                    }
+                });
+            }
+        }).catch((error) => {
+            setState(prevState => ({
+                ...prevState,
+                errors: error.response.data.errors,
+            }));
+            loaderOn("Register");
+            toast.error("Register error!", {
+                autoClose: 500,
+                pauseOnHover: true,
+            });
+        });
     };
 
 
     return (
         <div className="App">
+            <ToastContainer />
             <h1 className='text-center'>THREEL</h1>
             <div className="registerContainer mx-auto my-auto">
                 <h2 className='text-center'>REGISTER</h2>
@@ -136,7 +151,7 @@ function Register() {
                     <p className='mx-auto'>Already have an Account? <Link to="/login">Login Now!</Link></p>
 
                     <div className='mx-auto'>
-                        <button type="submit" className="registerButton" onClick={handleSubmit}>Register</button>
+                        <button type="submit" className="registerButton" onClick={handleSubmit} disabled={loader === "Registering..."}>{loader}</button>
                     </div>
                 </form>
             </div>

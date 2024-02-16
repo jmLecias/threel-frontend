@@ -38,7 +38,8 @@ class AuthenticationService {
         const response = await this.threel_api.post('/logout');
 
         if (response.status === 200) {
-            this.removeToken()
+            this.removeToken();
+            this.removeUser();
             return true;
         } else {
             return false;

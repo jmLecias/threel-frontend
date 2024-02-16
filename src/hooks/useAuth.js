@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./useLocalStorage";
+import { toast } from 'react-toastify';
 import AuthenticationService from '../services/AuthenticationService';
 
 const AuthContext = createContext();
@@ -18,31 +18,22 @@ export const AuthProvider = ({ children }) => {
 
     // call this function when you want to authenticate the user
     const login = async (credentials) => {
-        auth.login(credentials).then(isLoggedIn => {
-            if (isLoggedIn) {
-                navigate("/home", { replace: true });
-            }
-        }).catch(error => {
-            alert("Error logging in: " + error);
-        });
+        return auth.login(credentials)
     };
 
     const register = async (credentials) => {
-        auth.register(credentials).then(isRegistered => {
-            if (isRegistered) {
-                navigate("/home", { replace: true });
-            }
-        }).catch(error => {
-            alert("Error registering: " + error);
-        });
+        return auth.register(credentials)
     };
 
     // call this function to sign out logged in user
     const logout = () => {
         auth.logout().then(isLoggedOut => {
             if (isLoggedOut) {
-                navigate("/login", { replace: true });
-                auth.removeUser();
+                toast.success("Logout successful", {
+                    autoClose:  1000,
+                    pauseOnHover: true,
+                    onOpen: () => navigate("/login", { replace: true })
+                });
             }
         }).catch(error => {
             alert("Error logging out: " + error);
