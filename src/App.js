@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import Player from './pages/PlayerPage';
+import AdminDashboard from './pages/AdminDashboardPage';
+import NotFoundPage from './pages/PageNotFound';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./hooks/useAuth";
@@ -17,6 +19,7 @@ function App() {
           <Route index element={ <Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           <Route
             path="/home"
             element={
@@ -26,7 +29,7 @@ function App() {
             }
           />
           {/* Should use a different view for routes not found */}
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>
     </Router>

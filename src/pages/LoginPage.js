@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../hooks/useAuth";
+import Spinner from 'react-bootstrap/Spinner';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 
 function Login() {
     const { login } = useAuth();
@@ -10,7 +16,7 @@ function Login() {
     const [loader, loaderOn] = useState("Log in");
 
     const [state, setState] = useState({
-        email: '',  
+        email: '',
         password: '',
         errors: {
             email: '',
@@ -40,66 +46,75 @@ function Login() {
         loaderOn("Logging in...");
 
         login(credentials).then((isLoggedIn) => {
-            if(isLoggedIn === true) {
-                navigate("/home", {replace: true});
+            if (isLoggedIn === true) {
+                navigate("/home", { replace: true });
                 loaderOn("Log in");
             }
         }).catch((error) => {
             loaderOn("Log in");
             toast.error("Login error!\n", {
-                autoClose:  3000,
+                autoClose: 3000,
                 pauseOnHover: true,
             });
-        }); 
+        });
 
-        
+
     };
 
     return (
-        <div className="App">
-            <ToastContainer />
-            <h1 className='text-center'>THREEL</h1>
-            <div className="registerContainer mx-auto my-auto">
-                <h2 className='text-center'>LOGIN</h2>
-                <form className='form-group'>
+        <>
+            {/* <Modal /> */}
+            <div className="App">
+                <ToastContainer />
 
-                    <input
-                        name='email'
-                        type='email'
-                        id='email'
-                        placeholder='Email'
-                        value={state.email}
-                        onChange={handleChange}
-                        required
-                    />
-                    {state.errors.email && (
-                        <div className="error-message">{state.errors.email[0]}</div>
-                    )}
-                    <input
-                        name='password'
-                        id='password'
-                        type='password'
-                        placeholder='Password'
-                        value={state.password}
-                        onChange={handleChange}
-                        required
-                    />
-                    {state.errors.password && (
-                        <div className="error-message">{state.errors.password[0]}</div>
-                    )}
+                <div className="con-padlog">
+                    <Container className="text-center bg-prim rounded-3 col-md-5">
+                        <h1 className="text-maroon">THREEL</h1>
+                        <Row className="justify-content-center mt-3">
+                            <Col md={6}>
+                                <h2 className="text-white">Login</h2>
+                                <Form className='mb-3'>
 
-                    <p className='mx-auto'>Don't have an Account?  <Link to="/register">Register Here!</Link></p>
+                                    <input
+                                        name='email'
+                                        type='email'
+                                        id='email'
+                                        placeholder='Email'
+                                        value={state.email}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control mb-3"
+                                    />
+                                    {state.errors.email && (
+                                        <div className="error-message">{state.errors.email[0]}</div>
+                                    )}
+                                    <input
+                                        name='password'
+                                        id='password'
+                                        type='password'
+                                        placeholder='Password'
+                                        value={state.password}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control mb-3"
+                                    />
+                                    {state.errors.password && (
+                                        <div className="error-message">{state.errors.password[0]}</div>
+                                    )}
 
-                    <div className='mx-auto'>
-                        <button 
-                            className="registerButton" 
-                            onClick={handleSubmit} 
-                            disabled={loader === "Logging in..."}
-                        >{loader}</button>
-                    </div>
-                </form>
+                                    <p className='mx-auto'>Don't have an Account? <Link to="/register" className="text-white fst-italic fw-bold">Register Here!</Link></p>
+
+                                    <button type="submit" className="btn btn-lg custom-btn-prim" onClick={handleSubmit} disabled={loader === "Logging in..."}>
+                                        <h6 className='my-auto mx-auto text-white'>{loader}</h6>
+                                        {loader === "Logging in..." && <Spinner animation="border" size='sm' />}
+                                    </button>
+                                </Form>
+                            </Col>
+                        </Row>
+                    </Container>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 
