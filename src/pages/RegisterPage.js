@@ -20,8 +20,6 @@ function Register() {
 
     const [didAgree, setDidAgree] = useState(false);
 
-    const [accountType, setAccountType] = useState("");
-
     const [state, setState] = useState({
         name: '',
         username: '',
@@ -62,7 +60,7 @@ function Register() {
             username: state.username,
             password: state.password,
             password_confirmation: state.confirmPassword,
-            accountType: state.accountType
+            account_type: state.accountType
         }
 
         loaderOn("Registering...");
@@ -78,6 +76,7 @@ function Register() {
                     ...prevState,
                     errors: error.response.data.errors,
                 }));
+                console.log(state);
                 loaderOn("Register");
             });
         } else {
@@ -126,8 +125,8 @@ function Register() {
             errors.confirmPassword = "Passwords do not match";
         }
 
-        if (accountType === "Account Type") {
-            errors.accountType = "Account Type is required";
+        if (accountType === null | accountType === "") {
+            errors.accountType = "Choose user Type";
         }
     
         setState(prevState => ({
@@ -185,10 +184,10 @@ function Register() {
                             <h2 className="text-white">REGISTER</h2>
                             <Form className='mb-3'>
                                 <input
-                                    name='name'
-                                    type='text'
-                                    id='name'
-                                    placeholder='Name'
+                                    name="name"
+                                    type="text"
+                                    id="name"
+                                    placeholder="Name"
                                     value={state.name}
                                     onChange={handleChange}
                                     required
@@ -255,8 +254,8 @@ function Register() {
                                     </div>
                                 )}
 
-                                <select name="accountType" value={accountType} onChange={(e) => setAccountType(e.target.value)} className="form-select mb-3">
-                                    <option value="" disabled selected>Account Type</option>
+                                <select name="accountType" value={state.accountType} onChange={handleChange} className="form-select mb-3">
+                                    <option value="" disabled>Account Type</option>
                                     <option value="listener">Listener</option>
                                     <option value="artist">Artist</option>
                                 </select>
