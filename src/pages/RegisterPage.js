@@ -115,7 +115,7 @@ function Register() {
                         }
                     >Back</Button>
                     <Button
-                        variant="primary"
+                        variant="danger"
                         onClick={() => {
                             setShow(false);
                             setDidAgree(true);
@@ -203,7 +203,7 @@ function Register() {
                                 )}
 
                                 <select name="accountType" value={accountType} onChange={(e) => setAccountType(e.target.value)} className="form-select mb-3">
-                                    <option value="" disabled selected>Account Type</option>
+                                    <option value="" disabled>Account Type</option>
                                     <option value="listener">Listener</option>
                                     <option value="artist">Artist</option>
                                 </select>
