@@ -54,7 +54,21 @@ class AuthenticationService {
         }
     }
 
-    // Another function for getting user from backend
+    async me() {
+        const response = await this.threel_api.post('/me');
+        
+        if (response.status === 200) {
+            const user = response.data;
+            console.log(user);
+    
+            ss.storeItem('user', JSON.stringify(user));
+            console.log("debug" + ss.getItem('user'));
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     setAuthorizationHeader(token) {
         if (token) {

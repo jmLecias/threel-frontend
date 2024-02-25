@@ -27,12 +27,17 @@ export const AuthProvider = ({ children }) => {
         return auth.logout();
     };
 
+    const me = () => {
+        return auth.me();
+    };
+
     const value = useMemo(
         () => ({
             user,
             login,
             register,
             logout,
+            me,
         }),
         [user]
     );
