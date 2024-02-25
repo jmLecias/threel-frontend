@@ -1,50 +1,32 @@
-<<<<<<< HEAD
-:root{
-  --primary-header-color:#A82122;
-  --primary-header-hover-color:#661313;
-  --primary-background-color: #1B1B1B;
-=======
 :root {
   --primary-header-color: #A82122;
   --primary-header-hover-color: #661313;
   --primary-background-color: #1B1B1B;
   --primary-background-nav-color: #2d2d2d;
->>>>>>> origin/admin-interface
   --background-input-color: #282727;
   --text-input-color: #D9D9D9;
   --text-option-color: #D9D9D9;
   --text-paragraph-color: #BCBCBC;
   --text-modal-color: #000;
-<<<<<<< HEAD
-=======
   --text-secondary-color: #A82122;
->>>>>>> origin/admin-interface
   --text-cancel-color: #1E1E1E;
   --text-color: #FFFF;
   --background-opacity-color: rgba(0, 0, 0, 0.5);
 }
 
-<<<<<<< HEAD
-body,html{
-=======
 * {
   font-family: 'Poppins';
 }
 
 body,
 html {
->>>>>>> origin/admin-interface
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100vw;
 }
 
-<<<<<<< HEAD
-body{
-=======
 body {
->>>>>>> origin/admin-interface
   background-image: url('/public/images/bgimg.png');
   background-size: cover;
   background-attachment: fixed;
@@ -58,62 +40,26 @@ body h1 {
   font-size: 50px;
 }
 
-<<<<<<< HEAD
-body h2{
-  color: var(--text-color);
-  font-family: 'Poppins';
-  font-weight: 600;
-}
-
-.dash p {
-  color: var(--text-color);
-  font-family: "Poppins";
-  font-size: 18px;
-}
-
-.dash h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins";
-}
-
-=======
 body h2 {
   color: var(--text-color);
   font-weight: 600;
 }
 
->>>>>>> origin/admin-interface
 .bg-prim {
   background-color: var(--primary-background-color);
 }
 
-<<<<<<< HEAD
-.con-padreg{
-  padding-top: 70px;
-}
-
-.con-padlog{
-=======
 .con-padreg {
   padding-top: 70px;
 }
 
 .con-padlog {
->>>>>>> origin/admin-interface
   padding-top: 120px;
 }
 
 input {
   background-color: var(--background-input-color);
   color: var(--text-input-color);
-<<<<<<< HEAD
-  font-family: 'Poppins';
-=======
->>>>>>> origin/admin-interface
 }
 
 select {
@@ -121,33 +67,6 @@ select {
   color: var(--text-option-color);
 }
 
-<<<<<<< HEAD
-.dash select{
-  background-color: var(--background-input-color);
-  color: var(--text-option-color);
-}
-
-.registerContainer option{
-  color: var(--text-option-color);
-  background-color: var(--primary-background-nav-color);
-  font-family: 'Poppins';
-}
-
-#offcanvas a {
-  color: var(--text-paragraph-color);
-  text-decoration: none;
-  font-family: 'Poppins';
-  gap: 5px;
-}
-
-.offcanvas span {
-  color: var(--primary-header-color);
-  font-family: 'Poppins';
-}
-
-.nav-link.active {
-  background-color: var(--primary-background-nav-color);
-=======
 option {
   color: var(--text-option-color);
 }
@@ -164,32 +83,17 @@ option {
 
 .nav-link.active {
   background-color: var(--primary-background-nav-color); /* Change to desired highlight color */
->>>>>>> origin/admin-interface
   color: #fff;
   width: 100%;
 }
 
 .con-padreg p {
   color: var(--text-paragraph-color);
-<<<<<<< HEAD
-  font-family: 'Poppins';
-=======
->>>>>>> origin/admin-interface
   font-size: 10px;
 }
 
 .con-padlog p {
   color: var(--text-paragraph-color);
-<<<<<<< HEAD
-  font-family: 'Poppins';
-  font-size: 10px;
-}
-
-.registerContainer a{
-  color: var(--text-paragraph-color);
-  text-decoration: none;
-  font-family: 'Poppins';
-=======
   font-size: 10px;
 }
 
@@ -197,47 +101,12 @@ option {
 .con-padlog a {
   color: var(--text-paragraph-color);
   text-decoration: none;
->>>>>>> origin/admin-interface
   font-weight: 600;
   font-style: italic;
   margin-top: 5px;
   cursor: pointer;
 }
 
-<<<<<<< HEAD
-.con-padreg .custom-btn-prim{
-  background-color: var(--primary-header-color);
-  color: var(--text-color);
-  font-family: 'Poppins';
-  font-weight: bold;
-}
-
-.con-padreg .custom-btn-prim:hover{
-  background-color: var(--primary-header-hover-color);
-  color: var(--text-color);
-  font-family: 'Poppins';
-  font-weight: bold;
-}
-
-.con-padlog .custom-btn-prim{
-  background-color: var(--primary-header-color);
-  color: var(--text-color);
-  font-family: 'Poppins';
-  font-weight: bold;
-}
-
-.con-padlog .custom-btn-prim:hover{
-  background-color: var(--primary-header-hover-color);
-  color: var(--text-color);
-  font-family: 'Poppins';
-  font-weight: bold;
-}
-
-.error-message{
-  font-size: 12px;
-  color: var(--primary-header-color);
-  margin: 0px 20px;
-=======
 .con-padreg .custom-btn-prim {
   background-color: var(--primary-header-color);
   color: var(--text-color);
@@ -265,7 +134,6 @@ option {
   font-size: 12px;
   color: var(--primary-header-color);
   margin: -10px 20px 0px 20px;
->>>>>>> origin/admin-interface
 }
 
 .modal-overlay {
@@ -289,20 +157,6 @@ option {
   bottom: 0;
   background-color: var(--background-opacity-color);
   backdrop-filter: blur(5px);
-<<<<<<< HEAD
-  border-radius: 10px; 
-  color: var(--text-color);
-}
-
-.modal-overlay h2{
-  color: var(--primary-header-color);
-}
-
-.modal-button{
-  background-color: var(--primary-header-color);
-  color: var(--text-color);
-  font-family: 'Poppins';
-=======
   border-radius: 10px;
   color: var(--text-color);
 }
@@ -314,7 +168,6 @@ option {
 .modal-button {
   background-color: var(--primary-header-color);
   color: var(--text-color);
->>>>>>> origin/admin-interface
   font-weight: bold;
   width: 125px;
   height: 25px;
@@ -333,25 +186,11 @@ option {
   color: var(--text-modal-color);
 }
 
-<<<<<<< HEAD
-.chart-container {
-  display: flex;
-  align-items: center;
-}
-
-/* Page Not Found CSS */
-
-.not-found h1 {
-  color: var(--text-color);
-  padding-top: 45px;
-  font-family: 'Poppins';
-=======
 /* Page Not Found CSS */
 
 .not-found h1 {
   color: #ffff;
   padding-top: 45px;
->>>>>>> origin/admin-interface
   font-weight: 700;
 }
 
@@ -369,35 +208,12 @@ option {
   display: inline-block;
   padding: 10px 20px;
   text-decoration: none;
-<<<<<<< HEAD
-  background-color: var(--primary-header-color);
-=======
   background-color: #A82122;
->>>>>>> origin/admin-interface
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
-<<<<<<< HEAD
-  font-family: 'Poppins';
-}
-
-.home-button:hover {
-  background-color: var(--primary-header-hover-color);
-}
-
-@keyframes look-around {
-  0% { transform: translateX(0) translateY(0); }
-  12.5% { transform: translateX(-20px) translateY(20px); }
-  25% { transform: translateY(10px); }
-  37.5% { transform: translateX(20px) translateY(20px); }
-  50% { transform: translateX(10px); }
-  62.5% { transform: translateX(20px) translateY(-20px); }
-  75% { transform: translateY(-10px); }
-  87.5% { transform: translateX(-20px) translateY(-20px); }
-  100% { transform: translateX(0) translateY(0); } 
-=======
 }
 
 .home-button:hover {
@@ -440,18 +256,13 @@ option {
   100% {
     transform: translateX(0) translateY(0);
   }
->>>>>>> origin/admin-interface
 }
 
 .binoculars {
   border-radius: 20px;
   width: 100px;
   height: 50px;
-<<<<<<< HEAD
-  background-color: var(--primary-header-color);
-=======
   background-color: #A82122;
->>>>>>> origin/admin-interface
   position: relative;
   animation: look-around 20s infinite;
 }
@@ -473,11 +284,7 @@ option {
 .lens {
   width: 30px;
   height: 30px;
-<<<<<<< HEAD
-  background-color: var(--text-color);
-=======
   background-color: #fff;
->>>>>>> origin/admin-interface
   border-radius: 50%;
   position: absolute;
   top: 10px;
@@ -495,10 +302,321 @@ option {
   left: 50%;
   transform: translateX(-50%);
   font-size: 36px;
-<<<<<<< HEAD
-  color: var(--text-color);
-=======
   color: #fff;
->>>>>>> origin/admin-interface
+  animation: pop-up 5s ease-out infinite;
+}
+:root{
+  --primary-header-color:#A82122;
+  --primary-header-hover-color:#661313;
+  --primary-background-color: #1B1B1B;
+  --background-input-color: #282727;
+  --text-input-color: #D9D9D9;
+  --text-option-color: #D9D9D9;
+  --text-paragraph-color: #BCBCBC;
+  --text-modal-color: #000;
+  --text-cancel-color: #1E1E1E;
+  --text-color: #FFFF;
+  --background-opacity-color: rgba(0, 0, 0, 0.5);
+}
+
+body,html{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100vw;
+}
+
+body{
+  background-image: url('/public/images/bgimg.png');
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+body h1 {
+  color: var(--primary-header-color);
+  padding-top: 45px;
+  font-family: 'Poppins';
+  font-weight: 700;
+  font-size: 50px;
+}
+
+body h2{
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: 600;
+}
+
+.dash p {
+  color: var(--text-color);
+  font-family: "Poppins";
+  font-size: 18px;
+}
+
+.dash h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins";
+}
+
+.bg-prim {
+  background-color: var(--primary-background-color);
+}
+
+.con-padreg{
+  padding-top: 70px;
+}
+
+.con-padlog{
+  padding-top: 120px;
+}
+
+input {
+  background-color: var(--background-input-color);
+  color: var(--text-input-color);
+  font-family: 'Poppins';
+}
+
+select {
+  background-color: var(--background-input-color);
+  color: var(--text-option-color);
+}
+
+.dash select{
+  background-color: var(--background-input-color);
+  color: var(--text-option-color);
+}
+
+.registerContainer option{
+  color: var(--text-option-color);
+  background-color: var(--primary-background-nav-color);
+  font-family: 'Poppins';
+}
+
+#offcanvas a {
+  color: var(--text-paragraph-color);
+  text-decoration: none;
+  font-family: 'Poppins';
+  gap: 5px;
+}
+
+.offcanvas span {
+  color: var(--primary-header-color);
+  font-family: 'Poppins';
+}
+
+.nav-link.active {
+  background-color: var(--primary-background-nav-color);
+  color: #fff;
+  width: 100%;
+}
+
+.con-padreg p {
+  color: var(--text-paragraph-color);
+  font-family: 'Poppins';
+  font-size: 10px;
+}
+
+.con-padlog p {
+  color: var(--text-paragraph-color);
+  font-family: 'Poppins';
+  font-size: 10px;
+}
+
+.registerContainer a{
+  color: var(--text-paragraph-color);
+  text-decoration: none;
+  font-family: 'Poppins';
+  font-weight: 600;
+  font-style: italic;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.con-padreg .custom-btn-prim{
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: bold;
+}
+
+.con-padreg .custom-btn-prim:hover{
+  background-color: var(--primary-header-hover-color);
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: bold;
+}
+
+.con-padlog .custom-btn-prim{
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: bold;
+}
+
+.con-padlog .custom-btn-prim:hover{
+  background-color: var(--primary-header-hover-color);
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: bold;
+}
+
+.error-message{
+  font-size: 12px;
+  color: var(--primary-header-color);
+  margin: 0px 20px;
+}
+
+.modal-overlay {
+  position: absolute;
+  z-index: 1000;
+  width: 400px;
+  height: 600px;
+  display: block;
+  background-color: var(--primary-background-color);
+}
+
+.modal {
+  position: absolute;
+  display: block;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--background-opacity-color);
+  backdrop-filter: blur(5px);
+  border-radius: 10px; 
+  color: var(--text-color);
+}
+
+.modal-overlay h2{
+  color: var(--primary-header-color);
+}
+
+.modal-button{
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+  font-family: 'Poppins';
+  font-weight: bold;
+  width: 125px;
+  height: 25px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-title {
+  color: var(--primary-header-color);
+  font-weight: bold;
+}
+
+.modal-text {
+  color: var(--text-modal-color);
+}
+
+.chart-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Page Not Found CSS */
+
+.not-found h1 {
+  color: var(--text-color);
+  padding-top: 45px;
+  font-family: 'Poppins';
+  font-weight: 700;
+}
+
+.not-found {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+
+.home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  text-decoration: none;
+  background-color: var(--primary-header-color);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  font-family: 'Poppins';
+}
+
+.home-button:hover {
+  background-color: var(--primary-header-hover-color);
+}
+
+@keyframes look-around {
+  0% { transform: translateX(0) translateY(0); }
+  12.5% { transform: translateX(-20px) translateY(20px); }
+  25% { transform: translateY(10px); }
+  37.5% { transform: translateX(20px) translateY(20px); }
+  50% { transform: translateX(10px); }
+  62.5% { transform: translateX(20px) translateY(-20px); }
+  75% { transform: translateY(-10px); }
+  87.5% { transform: translateX(-20px) translateY(-20px); }
+  100% { transform: translateX(0) translateY(0); } 
+}
+
+.binoculars {
+  border-radius: 20px;
+  width: 100px;
+  height: 50px;
+  background-color: var(--primary-header-color);
+  position: relative;
+  animation: look-around 20s infinite;
+}
+
+@keyframes pop-up {
+
+  0%,
+  100% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(-30px) rotate(10deg);
+    opacity: 1;
+  }
+}
+
+.lens {
+  width: 30px;
+  height: 30px;
+  background-color: var(--text-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.lens.right {
+  left: auto;
+  right: 10px;
+}
+
+.question-mark {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  color: var(--text-color);
   animation: pop-up 5s ease-out infinite;
 }
