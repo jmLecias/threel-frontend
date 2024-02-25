@@ -18,7 +18,7 @@ function AdminNav({ isSideNavOpen, toggleSideNav }) {
                         <NavLink to="/artistlist" className="nav-link text-truncate" activeClassName="active">
                             <span className="ms-1 d-none d-sm-inline text-white">Artist List</span>
                         </NavLink>
-                        <NavLink to="/listenerlist"className="nav-link text-truncate" activeClassName="active">
+                        <NavLink to="/listenerlist" className="nav-link text-truncate" activeClassName="active">
                             <span className="ms-1 d-none d-sm-inline text-white">Listener List</span>
                         </NavLink>
                         <NavLink to="/musiclist" className="nav-link text-truncate" activeClassName="active">
@@ -35,6 +35,13 @@ function AdminNav({ isSideNavOpen, toggleSideNav }) {
                         </NavLink>
                     </li>
                 </ul>
+            </div>
+            <div className="offcanvas-footer mt-auto text-center pb-5">
+                <NavLink to="/home" className="nav-link text-truncate">
+                    <div className="rounded-3 bg-white px-4 py-2 d-inline-block">
+                        <span className="ms-1 d-none d-sm-inline text-dark">Logout</span>
+                    </div>
+                </NavLink>
             </div>
         </div>
     );
