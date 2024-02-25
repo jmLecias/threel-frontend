@@ -90,8 +90,6 @@ function Player() {
 
     const handleLogout = (event) => {
         event.preventDefault();
-        if(isCooldown) return;
-        handleCooldown();
         setLogoutText("Logging out...");
         logout().then((isLoggedOut) => {
             if (isLoggedOut) {
