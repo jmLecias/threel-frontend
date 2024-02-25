@@ -15,7 +15,9 @@ function Player() {
 
     const { logout, user } = useAuth();
 
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(
+        JSON.parse(ss.getItem('user')).original.email_verified_at !== '');
+    console.log(isEmailVerified);
     const [modal, setModal] = useState({
         show: false,
         title: '',
@@ -30,8 +32,6 @@ function Player() {
 
     useEffect(() => {
         const status = urlParams.get('status');
-
-        setIsEmailVerified(JSON.parse(ss.getItem('user')).original.email_verified_at !== '');
 
         if (status === 'verification_success') {
             setModal({
@@ -130,7 +130,7 @@ function Player() {
                         {logoutText}
                     </button>
                     <br />
-                    {isEmailVerified && (
+                    {!isEmailVerified && (
                         <>
                             <h5>Did not receive email verification? Click the resend button below.</h5>
                             <button className="registerButton" onClick={handleVerify}>

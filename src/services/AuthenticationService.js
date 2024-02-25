@@ -54,6 +54,8 @@ class AuthenticationService {
         }
     }
 
+    // Another function for getting user from backend
+
     setAuthorizationHeader(token) {
         if (token) {
             this.threel_api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
