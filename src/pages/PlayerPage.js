@@ -16,7 +16,7 @@ function Player() {
     const { logout, user } = useAuth();
 
     const [isEmailVerified, setIsEmailVerified] = useState(
-        JSON.parse(ss.getItem('user')).original.email_verified_at !== '');
+        JSON.parse(ss.getItem('user')).original.email_verified_at !== null);
     console.log(isEmailVerified);
     const [modal, setModal] = useState({
         show: false,
