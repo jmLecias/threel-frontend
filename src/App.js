@@ -1,6 +1,4 @@
-import {useEffect} from 'react';
-import './css/App.css';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import './css/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -20,20 +18,32 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route index element={ <Login />} />
+          <Route index element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/adminboard" element={<AdminDashboard />} />
-          <Route path="/artistlist" element={<AdminArtistList />}/>
-          <Route path="/listenerlist" element={<AdminListenerList />}/>
-          <Route
+          <Route path="/adminboard" element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/artistlist" element={
+            <ProtectedRoute>
+              <AdminArtistList />
+            </ProtectedRoute>
+          } />
+          <Route path="/listenerlist" element={
+            <ProtectedRoute>
+              <AdminListenerList />
+            </ProtectedRoute>
+          } />
+          {/* <Route
             path="/home"
             element={
               <ProtectedRoute>
                 <Player />
               </ProtectedRoute>
             }
-          />
+          /> */}
           {/* Should use a different view for routes not found */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

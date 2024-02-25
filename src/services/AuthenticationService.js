@@ -26,7 +26,6 @@ class AuthenticationService {
         if (response.status === 200) {
             const accessToken = response.data.access_token;
             const user = response.data.user;
-            const user = response.data.user;
     
             ss.storeItem('access_token', accessToken);
             ss.storeItem('user', JSON.stringify(user));

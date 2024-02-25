@@ -50,7 +50,7 @@ function Login() {
 
         login(credentials).then((isLoggedIn) => {
             if (isLoggedIn === true) {
-                navigate("/home", { replace: true });
+                navigate("/adminboard", { replace: true });
                 loaderOn("Log in");
             }
         }).catch((error) => {
