@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AdminNav from './AdminSideNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faBan, faRotate, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import threel_api from '../backend/api';
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const options = { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    return `${formattedDate}`;
+}
 
 function AdminArtistList() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
@@ -81,34 +89,42 @@ function AdminArtistList() {
 }
 
 function AllArtistsTable({ searchQuery }) {
-    // Mock data for demonstration
-    const artists = [
-        { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
-        { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
-        { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
-    ];
+    const [artists, setArtists] = useState([]);
+
+    useEffect(() => {
+        const fetchArtists = async () => {
+            try {
+                const response = await threel_api.post('/display');
+                setArtists(response.data.artists);
+            } catch (error) {
+                console.error('Error fetching artists:', error);
+            }
+        };
+
+        fetchArtists();
+    }, []);
 
     return (
         <div>
             <table className="table table-bordered">
-                <thead style={{borderColor: 'black'}}>
+                <thead style={{ borderColor: 'black' }}>
                     <tr className="text-center">
                         <th className="text-danger">Name</th>
                         <th className="text-danger">Joined On</th>
                         <th className="text-danger">Controls</th>
                     </tr>
                 </thead>
-                <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
+                <tbody className='text-center fw-bold' style={{ borderColor: 'black' }}>
                     {artists.map(artist => (
                         <tr key={artist.id}>
                             <td>{artist.name}</td>
-                            <td>{artist.joinedOn}</td>
+                            <td>{formatTimestamp(artist.created_at)}</td>
                             <td>
                                 <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
-                                    <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
+                                    <FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} />
                                 </button>
                                 <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
-                                    <FontAwesomeIcon icon={faBan} style={{color: 'black'}} />
+                                    <FontAwesomeIcon icon={faBan} style={{ color: 'black' }} />
                                 </button>
                             </td>
                         </tr>
@@ -126,17 +142,42 @@ function handleDelete(artistId) {
 
 function handleBan(artistId) {
     // Handle ban functionality
-    console.log(`Banning artist with ID ${artistId}`);
+    const response = threel_api.post(`/ban-artist/${artistId}`);
+    response.then(() => {
+        window.location.reload();
+    })
+}
+
+function handleRestore(artistId) {
+    const response = threel_api.post(`/restore-artist/${artistId}`);
+    response.then(() => {
+        window.location.reload();
+    })
+}
+
+function handleVerify(artistId) {
+    const response = threel_api.post(`/verify-artist/${artistId}`);
+    response.then(() => {
+        window.location.reload();
+    })
 }
 
 function BannedArtistsTable({ searchQuery }) {
-    // Implement table for banned artists with search functionality
-        // Mock data for demonstration
-        const artists = [
-            { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
-            { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
-            { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
-        ];
+    const [bannedArtists, setBannedArtists] = useState([]);
+
+    useEffect(() => {
+        const fetchBannedArtists = async () => {
+            try {
+                const response = await threel_api.post('/display-banned-artist');
+                setBannedArtists(response.data.banned_artists);
+                console.log('Banned artists response:', response.data);
+            } catch (error) {
+                console.error('Error fetching artists:', error);
+            }
+        };
+
+        fetchBannedArtists();
+    }, []);
     
         return (
             <div>
@@ -149,15 +190,15 @@ function BannedArtistsTable({ searchQuery }) {
                         </tr>
                     </thead>
                     <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
-                        {artists.map(artist => (
-                            <tr key={artist.id}>
-                                <td>{artist.name}</td>
-                                <td>{artist.joinedOn}</td>
+                        {bannedArtists.map(banned_artist => (
+                            <tr key={banned_artist.id}>
+                                <td>{banned_artist.name}</td>
+                                <td>{formatTimestamp(banned_artist.updated_at)}</td>
                                 <td>
-                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
+                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(banned_artist.id)}>
                                         <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
                                     </button>
-                                    <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
+                                    <button className="bg-transparent border-0" onClick={() => handleRestore(banned_artist.id)}>
                                         <FontAwesomeIcon icon={faRotate} style={{color: 'black'}} />
                                     </button>
                                 </td>
@@ -170,13 +211,20 @@ function BannedArtistsTable({ searchQuery }) {
 }
 
 function VerifyArtistsTable({ searchQuery }) {
-    // Implement table for artists that need verification with search functionality
-        // Mock data for demonstration
-        const artists = [
-            { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
-            { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
-            { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
-        ];
+    const [nverifiedArtists, setNverifiedArtists] = useState([]);
+
+    useEffect(() => {
+        const fetchNotVerifiedArtists = async () => {
+            try {
+                const response = await threel_api.post('/display-not-verified-artist');
+                setNverifiedArtists(response.data.nverified_artists);
+            } catch (error) {
+                console.error('Error fetching artists:', error);
+            }
+        };
+
+        fetchNotVerifiedArtists();
+    }, []);
     
         return (
             <div>
@@ -189,15 +237,15 @@ function VerifyArtistsTable({ searchQuery }) {
                         </tr>
                     </thead>
                     <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
-                        {artists.map(artist => (
-                            <tr key={artist.id}>
-                                <td>{artist.name}</td>
-                                <td>{artist.joinedOn}</td>
+                        {nverifiedArtists.map(nverified_artist => (
+                            <tr key={nverified_artist.id}>
+                                <td>{nverified_artist.name}</td>
+                                <td>{nverified_artist.joinedOn}</td>
                                 <td>
-                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
+                                    <button className="bg-transparent border-0 me-4" onClick={() => handleVerify(nverified_artist.id)}>
                                         <FontAwesomeIcon icon={faCircleCheck} style={{color: 'lightgreen'}} />
                                     </button>
-                                    <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
+                                    <button className="bg-transparent border-0" onClick={() => handleBan(nverified_artist.id)}>
                                         <FontAwesomeIcon icon={faTrash} style={{color: 'black'}} />
                                     </button>
                                 </td>
