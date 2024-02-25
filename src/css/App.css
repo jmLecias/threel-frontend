@@ -1,25 +1,50 @@
+<<<<<<< HEAD
 :root{
   --primary-header-color:#A82122;
   --primary-header-hover-color:#661313;
   --primary-background-color: #1B1B1B;
+=======
+:root {
+  --primary-header-color: #A82122;
+  --primary-header-hover-color: #661313;
+  --primary-background-color: #1B1B1B;
+  --primary-background-nav-color: #2d2d2d;
+>>>>>>> origin/admin-interface
   --background-input-color: #282727;
   --text-input-color: #D9D9D9;
   --text-option-color: #D9D9D9;
   --text-paragraph-color: #BCBCBC;
   --text-modal-color: #000;
+<<<<<<< HEAD
+=======
+  --text-secondary-color: #A82122;
+>>>>>>> origin/admin-interface
   --text-cancel-color: #1E1E1E;
   --text-color: #FFFF;
   --background-opacity-color: rgba(0, 0, 0, 0.5);
 }
 
+<<<<<<< HEAD
 body,html{
+=======
+* {
+  font-family: 'Poppins';
+}
+
+body,
+html {
+>>>>>>> origin/admin-interface
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100vw;
 }
 
+<<<<<<< HEAD
 body{
+=======
+body {
+>>>>>>> origin/admin-interface
   background-image: url('/public/images/bgimg.png');
   background-size: cover;
   background-attachment: fixed;
@@ -33,6 +58,7 @@ body h1 {
   font-size: 50px;
 }
 
+<<<<<<< HEAD
 body h2{
   color: var(--text-color);
   font-family: 'Poppins';
@@ -54,22 +80,40 @@ h6 {
   font-family: "Poppins";
 }
 
+=======
+body h2 {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+>>>>>>> origin/admin-interface
 .bg-prim {
   background-color: var(--primary-background-color);
 }
 
+<<<<<<< HEAD
 .con-padreg{
   padding-top: 70px;
 }
 
 .con-padlog{
+=======
+.con-padreg {
+  padding-top: 70px;
+}
+
+.con-padlog {
+>>>>>>> origin/admin-interface
   padding-top: 120px;
 }
 
 input {
   background-color: var(--background-input-color);
   color: var(--text-input-color);
+<<<<<<< HEAD
   font-family: 'Poppins';
+=======
+>>>>>>> origin/admin-interface
 }
 
 select {
@@ -77,6 +121,7 @@ select {
   color: var(--text-option-color);
 }
 
+<<<<<<< HEAD
 .dash select{
   background-color: var(--background-input-color);
   color: var(--text-option-color);
@@ -102,18 +147,40 @@ select {
 
 .nav-link.active {
   background-color: var(--primary-background-nav-color);
+=======
+option {
+  color: var(--text-option-color);
+}
+
+#offcanvas a{
+  color: var(--text-paragraph-color);
+  text-decoration: none;
+  gap: 5px;
+}
+
+.offcanvas span{
+  color: var(--primary-header-color);
+}
+
+.nav-link.active {
+  background-color: var(--primary-background-nav-color); /* Change to desired highlight color */
+>>>>>>> origin/admin-interface
   color: #fff;
   width: 100%;
 }
 
 .con-padreg p {
   color: var(--text-paragraph-color);
+<<<<<<< HEAD
   font-family: 'Poppins';
+=======
+>>>>>>> origin/admin-interface
   font-size: 10px;
 }
 
 .con-padlog p {
   color: var(--text-paragraph-color);
+<<<<<<< HEAD
   font-family: 'Poppins';
   font-size: 10px;
 }
@@ -122,12 +189,22 @@ select {
   color: var(--text-paragraph-color);
   text-decoration: none;
   font-family: 'Poppins';
+=======
+  font-size: 10px;
+}
+
+.con-padreg,
+.con-padlog a {
+  color: var(--text-paragraph-color);
+  text-decoration: none;
+>>>>>>> origin/admin-interface
   font-weight: 600;
   font-style: italic;
   margin-top: 5px;
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 .con-padreg .custom-btn-prim{
   background-color: var(--primary-header-color);
   color: var(--text-color);
@@ -160,6 +237,35 @@ select {
   font-size: 12px;
   color: var(--primary-header-color);
   margin: 0px 20px;
+=======
+.con-padreg .custom-btn-prim {
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.con-padreg .custom-btn-prim:hover {
+  background-color: var(--primary-header-hover-color);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.con-padlog .custom-btn-prim {
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.con-padlog .custom-btn-prim:hover {
+  background-color: var(--primary-header-hover-color);
+  font-weight: bold;
+}
+
+.error-message {
+  font-size: 12px;
+  color: var(--primary-header-color);
+  margin: -10px 20px 0px 20px;
+>>>>>>> origin/admin-interface
 }
 
 .modal-overlay {
@@ -183,6 +289,7 @@ select {
   bottom: 0;
   background-color: var(--background-opacity-color);
   backdrop-filter: blur(5px);
+<<<<<<< HEAD
   border-radius: 10px; 
   color: var(--text-color);
 }
@@ -195,6 +302,19 @@ select {
   background-color: var(--primary-header-color);
   color: var(--text-color);
   font-family: 'Poppins';
+=======
+  border-radius: 10px;
+  color: var(--text-color);
+}
+
+.modal-overlay h2 {
+  color: var(--primary-header-color);
+}
+
+.modal-button {
+  background-color: var(--primary-header-color);
+  color: var(--text-color);
+>>>>>>> origin/admin-interface
   font-weight: bold;
   width: 125px;
   height: 25px;
@@ -213,6 +333,7 @@ select {
   color: var(--text-modal-color);
 }
 
+<<<<<<< HEAD
 .chart-container {
   display: flex;
   align-items: center;
@@ -224,6 +345,13 @@ select {
   color: var(--text-color);
   padding-top: 45px;
   font-family: 'Poppins';
+=======
+/* Page Not Found CSS */
+
+.not-found h1 {
+  color: #ffff;
+  padding-top: 45px;
+>>>>>>> origin/admin-interface
   font-weight: 700;
 }
 
@@ -241,12 +369,17 @@ select {
   display: inline-block;
   padding: 10px 20px;
   text-decoration: none;
+<<<<<<< HEAD
   background-color: var(--primary-header-color);
+=======
+  background-color: #A82122;
+>>>>>>> origin/admin-interface
   color: #fff;
   border: none;
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
+<<<<<<< HEAD
   font-family: 'Poppins';
 }
 
@@ -264,13 +397,61 @@ select {
   75% { transform: translateY(-10px); }
   87.5% { transform: translateX(-20px) translateY(-20px); }
   100% { transform: translateX(0) translateY(0); } 
+=======
+}
+
+.home-button:hover {
+  background-color: #661313;
+}
+
+@keyframes look-around {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  12.5% {
+    transform: translateX(-20px) translateY(20px);
+  }
+
+  25% {
+    transform: translateY(10px);
+  }
+
+  37.5% {
+    transform: translateX(20px) translateY(20px);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+
+  62.5% {
+    transform: translateX(20px) translateY(-20px);
+  }
+
+  75% {
+    transform: translateY(-10px);
+  }
+
+  87.5% {
+    transform: translateX(-20px) translateY(-20px);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+>>>>>>> origin/admin-interface
 }
 
 .binoculars {
   border-radius: 20px;
   width: 100px;
   height: 50px;
+<<<<<<< HEAD
   background-color: var(--primary-header-color);
+=======
+  background-color: #A82122;
+>>>>>>> origin/admin-interface
   position: relative;
   animation: look-around 20s infinite;
 }
@@ -292,7 +473,11 @@ select {
 .lens {
   width: 30px;
   height: 30px;
+<<<<<<< HEAD
   background-color: var(--text-color);
+=======
+  background-color: #fff;
+>>>>>>> origin/admin-interface
   border-radius: 50%;
   position: absolute;
   top: 10px;
@@ -310,6 +495,10 @@ select {
   left: 50%;
   transform: translateX(-50%);
   font-size: 36px;
+<<<<<<< HEAD
   color: var(--text-color);
+=======
+  color: #fff;
+>>>>>>> origin/admin-interface
   animation: pop-up 5s ease-out infinite;
 }

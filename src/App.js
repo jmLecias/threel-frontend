@@ -1,11 +1,15 @@
 import {useEffect} from 'react';
 import './css/App.css';
+import {useEffect} from 'react';
+import './css/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Login from './pages/LoginPage';
 import Register from './pages/RegisterPage';
 import Player from './pages/PlayerPage';
 import AdminDashboard from './pages/AdminDashboardPage';
+import AdminArtistList from './pages/AdminArtistListPage';
+import AdminListenerList from './pages/AdminListenerListPage';
 import NotFoundPage from './pages/PageNotFound';
 
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -20,6 +24,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/adminboard" element={<AdminDashboard />} />
+          <Route path="/artistlist" element={<AdminArtistList />}/>
+          <Route path="/listenerlist" element={<AdminListenerList />}/>
           <Route
             path="/home"
             element={

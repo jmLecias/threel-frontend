@@ -20,20 +20,20 @@ function Register() {
 
     const [didAgree, setDidAgree] = useState(false);
 
-    const [accountType, setAccountType] = useState("");
-
     const [state, setState] = useState({
         name: '',
         username: '',
         email: '',
         password: '',
         confirmPassword: '',
+        accountType: '',
         errors: {
             name: '',
             email: '',
             username: '',
             password: '',
             confirmPassword: '',
+            accountType: '',
         },
     });
 
@@ -52,12 +52,15 @@ function Register() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        if (!validateForm()) return;
+
         const credentials = {
             email: state.email,
             name: state.name,
             username: state.username,
             password: state.password,
-            password_confirmation: state.confirmPassword
+            password_confirmation: state.confirmPassword,
+            account_type: state.accountType
         }
 
         loaderOn("Registering...");
@@ -65,7 +68,7 @@ function Register() {
         if (didAgree) {
             register(credentials).then((isRegistered) => {
                 if (isRegistered === true) {
-                    navigate("/home?status=verification_sent", { replace: true });
+                    navigate("/home", { replace: true });
                     loaderOn("Register");
                 }
             }).catch((error) => {
@@ -73,6 +76,7 @@ function Register() {
                     ...prevState,
                     errors: error.response.data.errors,
                 }));
+                console.log(state);
                 loaderOn("Register");
             });
         } else {
@@ -84,6 +88,54 @@ function Register() {
         }
     };
 
+    const validateForm = () => {
+        const { name, username, email, password, confirmPassword, accountType } = state;
+        let errors = {};
+    
+        if (!name.trim()) {
+            errors.name = "Name is required";
+        } else if (name.length > 100) {
+            errors.name = "Name cannot exceed 100 characters";
+        }
+
+        if (!username.trim()) {
+            errors.username = "Username is required";
+        } else if (username.length > 25) {
+            errors.username = "Username cannot exceed 25 characters";
+        }
+    
+        if (!email.trim()) {
+            errors.email = "Email is required";
+        } else {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+\w+$/;
+            if (!emailRegex.test(email)) {
+                errors.email = "Email is not in a valid format";
+            }
+        }
+
+        if (!password.trim()) {
+            errors.password = "Password is required";
+        } else if (password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            errors.password = "Password must be at least 8 characters long and contain at least 1 special character";
+        }
+
+        if (!confirmPassword.trim()) {
+            errors.confirmPassword = "Confirm your Password first";
+        } else if (password !== confirmPassword) {
+            errors.confirmPassword = "Passwords do not match";
+        }
+
+        if (accountType === null | accountType === "") {
+            errors.accountType = "Choose user Type";
+        }
+    
+        setState(prevState => ({
+            ...prevState,
+            errors: errors
+        }));
+    
+        return Object.keys(errors).length === 0;
+    };    
 
     return (
         <div className="App">
@@ -115,7 +167,7 @@ function Register() {
                         }
                     >Back</Button>
                     <Button
-                        variant="danger"
+                        variant="primary"
                         onClick={() => {
                             setShow(false);
                             setDidAgree(true);
@@ -128,21 +180,21 @@ function Register() {
                 <Container className="text-center bg-prim rounded-3 col-md-5">
                     <h1 className="text-maroon">THREEL</h1>
                     <Row className="justify-content-center mt-3">
-                        <Col md={6}>
+                        <Col md={6} className='w-75'>
                             <h2 className="text-white">REGISTER</h2>
                             <Form className='mb-3'>
                                 <input
-                                    name='name'
-                                    type='text'
-                                    id='name'
-                                    placeholder='Name'
+                                    name="name"
+                                    type="text"
+                                    id="name"
+                                    placeholder="Name"
                                     value={state.name}
                                     onChange={handleChange}
                                     required
                                     className="form-control mb-3"
                                 />
                                 {state.errors.name && (
-                                    <div className="error-message">{state.errors.name[0]}</div>
+                                    <div className="error-message">{state.errors.name}</div>
                                 )}
                                 <input
                                     name='username'
@@ -155,7 +207,7 @@ function Register() {
                                     className="form-control mb-3"
                                 />
                                 {state.errors.username && (
-                                    <div className="error-message">{state.errors.username[0]}</div>
+                                    <div className="error-message">{state.errors.username}</div>
                                 )}
                                 <input
                                     name='email'
@@ -168,7 +220,7 @@ function Register() {
                                     className="form-control mb-3"
                                 />
                                 {state.errors.email && (
-                                    <div className="error-message">{state.errors.email[0]}</div>
+                                    <div className="error-message">{state.errors.email}</div>
                                 )}
                                 <input
                                     name='password'
@@ -182,7 +234,7 @@ function Register() {
                                     className="form-control mb-3"
                                 />
                                 {state.errors.password && (
-                                    <div className="error-message">{state.errors.password[0]}</div>
+                                    <div className="error-message">{state.errors.password}</div>
                                 )}
 
                                 <input
@@ -196,21 +248,26 @@ function Register() {
                                     required
                                     className="form-control mb-3"
                                 />
-                                {state.errors.password_confirmation && (
+                                {state.errors.confirmPassword && (
                                     <div className="error-message">
-                                        {state.errors.password_confirmation[0]}
+                                        {state.errors.confirmPassword}
                                     </div>
                                 )}
 
-                                <select name="accountType" value={accountType} onChange={(e) => setAccountType(e.target.value)} className="form-select mb-3">
+                                <select name="accountType" value={state.accountType} onChange={handleChange} className="form-select mb-3">
                                     <option value="" disabled>Account Type</option>
                                     <option value="listener">Listener</option>
                                     <option value="artist">Artist</option>
                                 </select>
+                                {state.errors.accountType && (
+                                    <div className="error-message">
+                                        {state.errors.accountType}
+                                    </div>
+                                )}
 
                                 <p className='mx-auto'>Already have an Account? <Link to="/login" className="text-white fst-italic fw-bold">Login Now!</Link></p>
 
-                                <button type="submit" className="btn btn-lg custom-btn-prim" onClick={handleSubmit} disabled={loader === "Registering..."}>
+                                <button type="submit" className="btn btn-lg custom-btn-prim mb-5" onClick={handleSubmit} disabled={loader === "Registering..."}>
                                     <h6 className='my-auto mx-auto text-white'>{loader}</h6>
                                     {loader === "Registering..." && <Spinner animation="border" size='sm' />}
                                 </button>

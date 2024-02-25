@@ -1,47 +1,39 @@
-import React, { useState } from 'react';
-import { Link, useNavigate, NavLink } from 'react-router-dom';
-
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 function AdminNav({ isSideNavOpen, toggleSideNav }) {
     return (
-        <div className={`offcanvas offcanvas-start w-5 bg-dark ${isSideNavOpen ? 'show' : ''}`} tabIndex="-1" id="offcanvas">
+        <div className={`offcanvas offcanvas-start bg-dark ${isSideNavOpen ? 'show' : ''}`} tabIndex="-1" id="offcanvas">
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title text-white display-6">Hello, <span className="display-6 fw-bold">Admin</span></h5>
                 <button type="button" className="btn-close text-reset" onClick={toggleSideNav} aria-label="Close"></button>
             </div>
             <div className="offcanvas-body px-0">
-                <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+                <ul className="nav flex-column" id="menu">
                     <li className="nav-item">
                         <NavLink to="/adminboard" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Dashboard</span>
+                            Dashboard
                         </NavLink>
                         <NavLink to="/artistlist" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Artist List</span>
+                            Artist List
                         </NavLink>
                         <NavLink to="/listenerlist" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Listener List</span>
+                            Listener List
                         </NavLink>
                         <NavLink to="/musiclist" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Music List</span>
+                            Music List
                         </NavLink>
                         <NavLink to="/podcastlist" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Podcast List</span>
+                            Podcast List
                         </NavLink>
                         <NavLink to="/videocastlist" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Videocast List</span>
+                            Videocast List
                         </NavLink>
                         <NavLink to="/prices" className="nav-link text-truncate" activeClassName="active">
-                            <span className="ms-1 d-none d-sm-inline text-white">Pricing Settings</span>
+                            Pricing Settings
                         </NavLink>
                     </li>
                 </ul>
-            </div>
-            <div className="offcanvas-footer mt-auto text-center pb-5">
-                <NavLink to="/home" className="nav-link text-truncate">
-                    <div className="rounded-3 bg-white px-4 py-2 d-inline-block">
-                        <span className="ms-1 d-none d-sm-inline text-dark">Logout</span>
-                    </div>
-                </NavLink>
             </div>
         </div>
     );

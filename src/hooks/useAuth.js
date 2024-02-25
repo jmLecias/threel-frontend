@@ -1,20 +1,22 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import AuthenticationService from '../services/AuthenticationService';
-import StorageService from "../services/StorageService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const auth = new AuthenticationService();
-    const ss = new StorageService();
+    const navigate = useNavigate();
 
-    const user = ss.getItem('user');
+    const user = auth.getUser();
 
     useEffect(() => {
-        const token = ss.getItem('access_token');
+        const token = auth.getToken();
         auth.setAuthorizationHeader(token);
     }, []);
 
+    // call this function when you want to authenticate the user
     const login = async (credentials) => {
         return auth.login(credentials);
     };
@@ -23,12 +25,9 @@ export const AuthProvider = ({ children }) => {
         return auth.register(credentials);
     };
 
+    // call this function to sign out logged in user
     const logout = () => {
         return auth.logout();
-    };
-
-    const me = () => {
-        return auth.me();
     };
 
     const value = useMemo(
@@ -37,7 +36,6 @@ export const AuthProvider = ({ children }) => {
             login,
             register,
             logout,
-            me,
         }),
         [user]
     );
