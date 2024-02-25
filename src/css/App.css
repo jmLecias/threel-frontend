@@ -79,8 +79,14 @@ select {
   color: var(--text-option-color);
 }
 
+.dash select{
+  background-color: var(--background-input-color);
+  color: var(--text-option-color);
+}
+
 option {
   color: var(--text-option-color);
+  background-color: var(--primary-background-nav-color);
   font-family: 'Poppins';
 }
 

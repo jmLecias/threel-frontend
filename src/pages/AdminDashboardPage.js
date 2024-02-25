@@ -123,11 +123,12 @@ function AdminDashboard() {
                         <div className="col">
                             <div className={`card col-md-${isSideNavOpen ? 8 : 10}`} >
                                 <div className="card-body bg-dark">
-                                    <h3 className="card-title text-danger fw-bold">App Downloads</h3>
-                                    <select value={timeInterval} onChange={handleIntervalChange}>
+                                    <h3 className="card-title text-danger fw-bold d-flex align-items-center">App Downloads 
+                                    <select className="form-select ms-auto" value={timeInterval} onChange={handleIntervalChange} style={{ fontSize: 'small', width: '100px' }}>
                                         <option value="months">Months</option>
                                         <option value="years">Years</option>
-                                    </select>
+                                    </select></h3>
+                                    
                                     <div className="chart-container d-flex justify-content-between align-items-center">
                                         <Chart type="line" data={downloadsChart} options={linechartOptions} height={300} width={500} />
                                         <p className="text-white fw-bold">    Highest Downloads: <strong className="text-warning">
