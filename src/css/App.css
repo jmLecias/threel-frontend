@@ -39,7 +39,22 @@ body h2{
   font-weight: 600;
 }
 
-.bg-prim{
+.dash p {
+  color: var(--text-color);
+  font-family: "Poppins";
+  font-size: 18px;
+}
+
+.dash h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins";
+}
+
+.bg-prim {
   background-color: var(--primary-background-color);
 }
 
@@ -57,22 +72,38 @@ input {
   font-family: 'Poppins';
 }
 
-.registerContainer select {
+select {
   background-color: var(--background-input-color);
-  height: 35px;
   color: var(--text-option-color);
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-left: 15px;
-  margin-right: 15px;
-  padding-left: 10px;
-  border: none;
-  cursor: pointer;
+}
+
+.dash select{
+  background-color: var(--background-input-color);
+  color: var(--text-option-color);
 }
 
 .registerContainer option{
   color: var(--text-option-color);
+  background-color: var(--primary-background-nav-color);
   font-family: 'Poppins';
+}
+
+#offcanvas a {
+  color: var(--text-paragraph-color);
+  text-decoration: none;
+  font-family: 'Poppins';
+  gap: 5px;
+}
+
+.offcanvas span {
+  color: var(--primary-header-color);
+  font-family: 'Poppins';
+}
+
+.nav-link.active {
+  background-color: var(--primary-background-nav-color);
+  color: #fff;
+  width: 100%;
 }
 
 .con-padreg p {
@@ -182,10 +213,15 @@ input {
   color: var(--text-modal-color);
 }
 
+.chart-container {
+  display: flex;
+  align-items: center;
+}
+
 /* Page Not Found CSS */
 
 .not-found h1 {
-  color: #ffff;
+  color: var(--text-color);
   padding-top: 45px;
   font-family: 'Poppins';
   font-weight: 700;
@@ -205,7 +241,7 @@ input {
   display: inline-block;
   padding: 10px 20px;
   text-decoration: none;
-  background-color: #A82122;
+  background-color: var(--primary-header-color);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -215,7 +251,7 @@ input {
 }
 
 .home-button:hover {
-  background-color: #661313;
+  background-color: var(--primary-header-hover-color);
 }
 
 @keyframes look-around {
@@ -234,7 +270,7 @@ input {
   border-radius: 20px;
   width: 100px;
   height: 50px;
-  background-color: #A82122;
+  background-color: var(--primary-header-color);
   position: relative;
   animation: look-around 20s infinite;
 }
@@ -256,7 +292,7 @@ input {
 .lens {
   width: 30px;
   height: 30px;
-  background-color: #fff;
+  background-color: var(--text-color);
   border-radius: 50%;
   position: absolute;
   top: 10px;
@@ -274,6 +310,6 @@ input {
   left: 50%;
   transform: translateX(-50%);
   font-size: 36px;
-  color: #fff;
+  color: var(--text-color);
   animation: pop-up 5s ease-out infinite;
 }
