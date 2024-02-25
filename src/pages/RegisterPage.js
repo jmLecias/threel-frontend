@@ -124,7 +124,7 @@ function Register() {
                     >Accept</Button>
                 </Modal.Footer>
             </Modal>
-            <div className="con-padreg">
+            <div className="con-padreg mx-auto my-auto">
                 <Container className="text-center bg-prim rounded-3 col-md-5">
                     <h1 className="text-maroon">THREEL</h1>
                     <Row className="justify-content-center mt-3">

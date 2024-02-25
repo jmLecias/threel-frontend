@@ -67,7 +67,7 @@ function Login() {
             <div className="App">
                 <ToastContainer />
 
-                <div className="con-padlog">
+                <div className="con-padlog mx-auto my-auto">
                     <Container className="text-center bg-prim rounded-3 col-md-5">
                         <h1 className="text-maroon">THREEL</h1>
                         <Row className="justify-content-center mt-3">

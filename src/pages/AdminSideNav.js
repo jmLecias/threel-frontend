@@ -1,20 +1,38 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 
 
-function AdminNav() {
+function AdminNav({ isSideNavOpen, toggleSideNav }) {
     return (
-        <div className="offcanvas offcanvas-start w-25 bg-dark" tabIndex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
+        <div className={`offcanvas offcanvas-start w-5 bg-dark ${isSideNavOpen ? 'show' : ''}`} tabIndex="-1" id="offcanvas">
             <div className="offcanvas-header">
-                <h6 className="offcanvas-title d-none d-sm-block" id="offcanvas">Menu</h6>
-                <button type="button" className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <h5 className="offcanvas-title text-white display-6">Hello, <span className="display-6 fw-bold">Admin</span></h5>
+                <button type="button" className="btn-close text-reset" onClick={toggleSideNav} aria-label="Close"></button>
             </div>
             <div className="offcanvas-body px-0">
                 <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
                     <li className="nav-item">
-                        <a href="#" className="nav-link text-truncate">
-                            <i className="fs-5 bi-house"></i><span className="ms-1 d-none d-sm-inline">Dashboard</span>
-                        </a>
+                        <NavLink to="/adminboard" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Dashboard</span>
+                        </NavLink>
+                        <NavLink to="/artistlist" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Artist List</span>
+                        </NavLink>
+                        <NavLink to="/listenerlist"className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Listener List</span>
+                        </NavLink>
+                        <NavLink to="/musiclist" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Music List</span>
+                        </NavLink>
+                        <NavLink to="/podcastlist" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Podcast List</span>
+                        </NavLink>
+                        <NavLink to="/videocastlist" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Videocast List</span>
+                        </NavLink>
+                        <NavLink to="/prices" className="nav-link text-truncate" activeClassName="active">
+                            <span className="ms-1 d-none d-sm-inline text-white">Pricing Settings</span>
+                        </NavLink>
                     </li>
                 </ul>
             </div>

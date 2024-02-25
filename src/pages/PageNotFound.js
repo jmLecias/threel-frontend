@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 
 function NotFoundPage() {
     return (
@@ -10,7 +10,7 @@ function NotFoundPage() {
                 <div className="question-mark">?</div>
             </div>
             <h1>Page not found!</h1>
-            <a href="#" className="home-button">Home</a>
+            <NavLink to="/home" className="home-button">Home</NavLink>
         </div>
     );
 }
