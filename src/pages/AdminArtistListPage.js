@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AdminNav from './AdminSideNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faBan, faRotate } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faBan, faRotate, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
-function AdminListenerList() {
+function AdminArtistList() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
@@ -27,6 +27,8 @@ function AdminListenerList() {
                 return <AllArtistsTable searchQuery={searchQuery} />;
             case 'Ban List':
                 return <BannedArtistsTable searchQuery={searchQuery} />;
+            case 'Verify Artist':
+                return <VerifyArtistsTable searchQuery={searchQuery} />;
             default:
                 return null;
         }
@@ -54,6 +56,11 @@ function AdminListenerList() {
                             <li className="nav-item">
                                 <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''}`} onClick={() => handleTabChange('Ban List')}>
                                     Ban List
+                                </button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={`nav-link ${activeTab === 'Verify Artist' ? 'active' : ''}`} onClick={() => handleTabChange('Verify Artist')}>
+                                    Verify Artist
                                 </button>
                             </li>
                         </ul>
@@ -162,4 +169,44 @@ function BannedArtistsTable({ searchQuery }) {
         );
 }
 
-export default AdminListenerList;
+function VerifyArtistsTable({ searchQuery }) {
+    // Implement table for artists that need verification with search functionality
+        // Mock data for demonstration
+        const artists = [
+            { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
+            { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
+            { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
+        ];
+    
+        return (
+            <div>
+                <table className="table table-bordered">
+                    <thead style={{borderColor: 'black'}}>
+                        <tr className="text-center">
+                            <th className="text-danger">Name</th>
+                            <th className="text-danger">Attached Document</th>
+                            <th className="text-danger">Controls</th>
+                        </tr>
+                    </thead>
+                    <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
+                        {artists.map(artist => (
+                            <tr key={artist.id}>
+                                <td>{artist.name}</td>
+                                <td>{artist.joinedOn}</td>
+                                <td>
+                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
+                                        <FontAwesomeIcon icon={faCircleCheck} style={{color: 'lightgreen'}} />
+                                    </button>
+                                    <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
+                                        <FontAwesomeIcon icon={faTrash} style={{color: 'black'}} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        );
+}
+
+export default AdminArtistList;
