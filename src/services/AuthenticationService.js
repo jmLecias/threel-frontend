@@ -1,4 +1,4 @@
-import threel_api from './api';
+import threel_api from '../backend/api';
 import SecureLS from 'secure-ls';
 
 const ls = new SecureLS({ encodingType: 'aes' });
@@ -8,13 +8,53 @@ class AuthenticationService {
         this.threel_api = threel_api;
     }
 
+    storeUser(user) {
+        try {
+            ls.set('user', user);
+        } catch (error) {
+            console.error('Error storing user:', error);
+        }
+    }
+
+    getUser() {
+        try {
+            const user = ls.get('user');
+            return user;
+        } catch (error) {
+            console.error('Error retrieving user:', error);
+            return null;
+        }
+    }
+    
+    removeUser() {
+        try {
+            ls.remove('user');
+        } catch (error) {
+            console.error('Error removing user:', error);
+        }
+    }
+
+    async logout() {
+        const response = await this.threel_api.post('/logout');
+
+        if (response.status === 200) {
+            this.removeToken();
+            this.removeUser();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     async login(credentials) {
         const response = await this.threel_api.post('/login', credentials);
         
         if (response.status === 200) {
             const accessToken = response.data.access_token;
+            const user = response.data.user;
     
             this.storeToken(accessToken);
+            this.storeUser(JSON.stringify(user));
             this.setAuthorizationHeader(accessToken);
     
             return true;
@@ -28,8 +68,10 @@ class AuthenticationService {
         
         if (response.status === 200) {
             const accessToken = response.data.access_token;
-
+            const user = response.data.user;
+    
             this.storeToken(accessToken);
+            this.storeUser(JSON.stringify(user));
             this.setAuthorizationHeader(accessToken);
 
             return true;
@@ -51,13 +93,12 @@ class AuthenticationService {
             ls.set('access_token', token);
         } catch (error) {
             console.error('Error storing token:', error);
-            // Handle storage failure (e.g., display error message or retry)
         }
     }
     
-    async getToken() {
+    getToken() {
         try {
-            const token = await ls.get('access_token');
+            const token = ls.get('access_token');
             return token;
         } catch (error) {
             console.error('Error retrieving token:', error);
@@ -65,12 +106,11 @@ class AuthenticationService {
         }
     }
     
-    async removeToken() {
+    removeToken() {
         try {
-            await ls.remove('access_token');
+            ls.remove('access_token');
         } catch (error) {
             console.error('Error removing token:', error);
-            // Handle removal failure (e.g., log or ignore)
         }
     }
 
