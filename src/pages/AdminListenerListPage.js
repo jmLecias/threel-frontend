@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import AdminNav from './AdminSideNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faBan, faRotate } from '@fortawesome/free-solid-svg-icons';
@@ -39,20 +38,28 @@ function AdminListenerList() {
                     <AdminNav isSideNavOpen={isSideNavOpen} toggleSideNav={toggleSideNav} />
                 </div>
                 <div className={`col-md-${isSideNavOpen ? 9 : 12}`}>
-                    <button className="btn float-end" onClick={toggleSideNav} role="button">
+                    <button className="btn float-end" onClick={toggleSideNav}>
                         <p className={`bi bi-${isSideNavOpen ? 'arrow-right-square-fill' : 'arrow-left-square-fill'} fs-3 text-white`}>+</p>
                     </button>
-                    <h1 className="text-white fw-bold">ARTIST</h1>
+                    <h1 className="text-white fw-bold">LISTENER</h1>
                     
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''}`} onClick={() => handleTabChange('All')}>
+                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''} border-0`} 
+                                 onClick={() => handleTabChange('All')}
+                                 style={{backgroundColor: activeTab === 'All' ? '#464646' : '#272727', 
+                                 color: activeTab === 'All' ? 'white' : '#D9D9D9',
+                                 fontWeight: activeTab === 'All' ? 'bold' : '',}}>
                                     All
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''}`} onClick={() => handleTabChange('Ban List')}>
+                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''} border-0`} 
+                                 onClick={() => handleTabChange('Ban List')}
+                                 style={{backgroundColor: activeTab === 'Ban List' ? '#464646' : '#272727', 
+                                 color: activeTab === 'Ban List' ? 'white' : '#D9D9D9',
+                                 fontWeight: activeTab === 'Ban List' ? 'bold' : '',}}>
                                     Ban List
                                 </button>
                             </li>

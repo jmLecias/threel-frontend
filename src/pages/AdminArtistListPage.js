@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import AdminNav from './AdminSideNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faBan, faRotate, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -14,8 +13,19 @@ function formatTimestamp(timestamp) {
 
 function AdminArtistList() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState('All');
+    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'All');
     const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const storedActiveTab = localStorage.getItem('activeTab');
+        if (storedActiveTab) {
+            setActiveTab(storedActiveTab);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('activeTab', activeTab);
+    }, [activeTab]);
 
     const toggleSideNav = () => {
         setIsSideNavOpen(!isSideNavOpen);
@@ -57,17 +67,29 @@ function AdminArtistList() {
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''}`} onClick={() => handleTabChange('All')}>
+                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''} border-0`} 
+                                 onClick={() => handleTabChange('All')}
+                                 style={{backgroundColor: activeTab === 'All' ? '#464646' : '#272727', 
+                                         color: activeTab === 'All' ? 'white' : '#D9D9D9',
+                                         fontWeight: activeTab === 'All' ? 'bold' : '',}}>
                                     All
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''}`} onClick={() => handleTabChange('Ban List')}>
+                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''} border-0`} 
+                                 onClick={() => handleTabChange('Ban List')}
+                                 style={{backgroundColor: activeTab === 'Ban List' ? '#464646' : '#272727', 
+                                 color: activeTab === 'Ban List' ? 'white' : '#D9D9D9',
+                                 fontWeight: activeTab === 'Ban List' ? 'bold' : '',}}>
                                     Ban List
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'Verify Artist' ? 'active' : ''}`} onClick={() => handleTabChange('Verify Artist')}>
+                                <button className={`nav-link ${activeTab === 'Verify Artist' ? 'active' : ''} border-0`} 
+                                 onClick={() => handleTabChange('Verify Artist')}
+                                 style={{backgroundColor: activeTab === 'Verify Artist' ? '#464646' : '#272727', 
+                                 color: activeTab === 'Verify Artist' ? 'white' : '#D9D9D9',
+                                 fontWeight: activeTab === 'Verify Artist' ? 'bold' : '',}}>
                                     Verify Artist
                                 </button>
                             </li>
