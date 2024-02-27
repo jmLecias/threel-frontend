@@ -7,6 +7,11 @@ function AdminListenerList() {
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
+    const [artists, setArtists] = useState([
+        { id: 1, name: 'Listener 1', joinedOn: '2022-02-20' },
+        { id: 2, name: 'Listener 2', joinedOn: '2022-02-21' },
+        { id: 3, name: 'Listener 3', joinedOn: '2022-02-22' },
+    ]);
 
     const toggleSideNav = () => {
         setIsSideNavOpen(!isSideNavOpen);
@@ -20,12 +25,30 @@ function AdminListenerList() {
         setSearchQuery(e.target.value);
     };
 
+    const handleDelete = (artistId) => {
+        // Filter out the artist with the given ID
+        const updatedArtists = artists.filter(artist => artist.id !== artistId);
+        setArtists(updatedArtists);
+    };
+
+    const handleBan = (artistId) => {
+        // Filter out the artist with the given ID
+        const updatedArtists = artists.filter(artist => artist.id !== artistId);
+        setArtists(updatedArtists);
+    };
+
+    const handleRestore = (artistId) => {
+        // Filter out the artist with the given ID
+        const updatedArtists = artists.filter(artist => artist.id !== artistId);
+        setArtists(updatedArtists);
+    };
+
     const renderTable = () => {
         switch (activeTab) {
             case 'All':
-                return <AllArtistsTable searchQuery={searchQuery} />;
+                return <AllListenersTable searchQuery={searchQuery} artists={artists} handleDelete={handleDelete} handleBan={handleBan} />;
             case 'Ban List':
-                return <BannedArtistsTable searchQuery={searchQuery} />;
+                return <BannedListenersTable searchQuery={searchQuery} artists={artists} handleDelete={handleDelete} handleRestore={handleRestore}/>;
             default:
                 return null;
         }
@@ -80,14 +103,7 @@ function AdminListenerList() {
     );
 }
 
-function AllArtistsTable({ searchQuery }) {
-    // Mock data for demonstration
-    const artists = [
-        { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
-        { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
-        { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
-    ];
-
+function AllListenersTable({ searchQuery, artists, handleDelete, handleBan }) {
     return (
         <div>
             <table className="table table-bordered">
@@ -108,7 +124,7 @@ function AllArtistsTable({ searchQuery }) {
                                     <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
                                 </button>
                                 <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
-                                    <FontAwesomeIcon icon={faBan} style={{color: 'black'}} />
+                                    <FontAwesomeIcon icon={faBan} style={{ color: 'black' }} />
                                 </button>
                             </td>
                         </tr>
@@ -119,54 +135,36 @@ function AllArtistsTable({ searchQuery }) {
     );
 }
 
-function handleDelete(artistId) {
-    // Handle delete functionality
-    console.log(`Deleting artist with ID ${artistId}`);
-}
-
-function handleBan(artistId) {
-    // Handle ban functionality
-    console.log(`Banning artist with ID ${artistId}`);
-}
-
-function BannedArtistsTable({ searchQuery }) {
-    // Implement table for banned artists with search functionality
-        // Mock data for demonstration
-        const artists = [
-            { id: 1, name: 'Artist 1', joinedOn: '2022-02-20' },
-            { id: 2, name: 'Artist 2', joinedOn: '2022-02-21' },
-            { id: 3, name: 'Artist 3', joinedOn: '2022-02-22' },
-        ];
-    
-        return (
-            <div>
-                <table className="table table-bordered">
-                    <thead style={{borderColor: 'black'}}>
-                        <tr className="text-center">
-                            <th className="text-danger">Name</th>
-                            <th className="text-danger">Banned On</th>
-                            <th className="text-danger">Controls</th>
-                        </tr>
-                    </thead>
-                    <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
-                        {artists.map(artist => (
-                            <tr key={artist.id}>
-                                <td>{artist.name}</td>
-                                <td>{artist.joinedOn}</td>
-                                <td>
-                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
-                                        <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
-                                    </button>
-                                    <button className="bg-transparent border-0" onClick={() => handleBan(artist.id)}>
+function BannedListenersTable({ searchQuery, artists, handleDelete, handleRestore }) {
+    return (
+        <div>
+            <table className="table table-bordered">
+                <thead style={{borderColor: 'black'}}>
+                    <tr className="text-center">
+                        <th className="text-danger">Name</th>
+                        <th className="text-danger">Banned On</th>
+                        <th className="text-danger">Controls</th>
+                    </tr>
+                </thead>
+                <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
+                    {artists.map(artist => (
+                        <tr key={artist.id}>
+                            <td>{artist.name}</td>
+                            <td>{artist.joinedOn}</td>
+                            <td>
+                                <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
+                                    <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
+                                </button>
+                                <button className="bg-transparent border-0" onClick={() => handleRestore(artist.id)}>
                                         <FontAwesomeIcon icon={faRotate} style={{color: 'black'}} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
 export default AdminListenerList;
