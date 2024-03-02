@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import Spinner from 'react-bootstrap/Spinner';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -50,7 +50,7 @@ function Login() {
 
         login(credentials).then((isLoggedIn) => {
             if (isLoggedIn === true) {
-                navigate("/adminboard", { replace: true });
+                navigate("/admin/dashboard", { replace: true });
                 loaderOn("Log in");
             }
         }).catch((error) => {
@@ -134,9 +134,9 @@ function Login() {
 
                                     <p className='mx-auto'>Don't have an Account? <Link to="/register" className="text-white fst-italic fw-bold">Register Here!</Link></p>
 
-                                    <button type="submit" className="btn btn-lg custom-btn-prim mb-4 w-25" onClick={handleSubmit} disabled={loader === "Logging in..."}>
-                                        <h6 className='my-auto mx-auto text-white'>{loader}</h6>
+                                    <button type="submit" className="btn btn-lg custom-btn-prim mb-5 d-flex mx-auto" onClick={handleSubmit} disabled={loader === "Logging in..."}>
                                         {loader === "Logging in..." && <Spinner animation="border" size='sm' />}
+                                        <h6 className='my-auto mx-auto text-white'>{loader}</h6>
                                     </button>
                                 </Form>
                             </Col>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import AdminNav from './AdminSideNav';
+import AdminNav from '../../components/AdminSideNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faBan, faRotate, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import threel_api from '../backend/api';
+import threel_api from '../../backend/api';
+import StorageService from '../../services/StorageService';
 
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
@@ -13,9 +13,21 @@ function formatTimestamp(timestamp) {
 }
 
 function AdminArtistList() {
+    const ss = new StorageService();
     const [isSideNavOpen, setIsSideNavOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState('All');
+    const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'All');
     const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const storedActiveTab = localStorage.getItem('activeTab');
+        if (storedActiveTab) {
+            setActiveTab(storedActiveTab);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('activeTab', activeTab);
+    }, [activeTab]);
 
     const toggleSideNav = () => {
         setIsSideNavOpen(!isSideNavOpen);
@@ -46,38 +58,52 @@ function AdminArtistList() {
         <div className="container-fluid d-flow">
             <div className="row">
                 <div className={`col-md-${isSideNavOpen ? 3 : 12}`} style={{ marginRLeft: isSideNavOpen ? '15px' : '0' }}>
-                    <AdminNav isSideNavOpen={isSideNavOpen} toggleSideNav={toggleSideNav} />
+                    <AdminNav />
                 </div>
-                <div className={`col-md-${isSideNavOpen ? 9 : 12}`}>
-                    <button className="btn float-end" onClick={toggleSideNav} role="button">
-                        <p className={`bi bi-${isSideNavOpen ? 'arrow-right-square-fill' : 'arrow-left-square-fill'} fs-3 text-white`}>+</p>
-                    </button>
+                <div  style={{ marginLeft: '400px' , width: '74%'}}>
                     <h1 className="text-white fw-bold">ARTIST</h1>
-                    
+
                     <div className="d-flex align-items-center justify-content-between mb-3">
                         <ul className="nav nav-tabs">
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''}`} onClick={() => handleTabChange('All')}>
+                                <button className={`nav-link ${activeTab === 'All' ? 'active' : ''} border-0`}
+                                    onClick={() => handleTabChange('All')}
+                                    style={{
+                                        backgroundColor: activeTab === 'All' ? '#464646' : '#272727',
+                                        color: activeTab === 'All' ? 'white' : '#D9D9D9',
+                                        // fontWeight: activeTab === 'All' ? 'bold' : '',
+                                    }}>
                                     All
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''}`} onClick={() => handleTabChange('Ban List')}>
+                                <button className={`nav-link ${activeTab === 'Ban List' ? 'active' : ''} border-0`}
+                                    onClick={() => handleTabChange('Ban List')}
+                                    style={{
+                                        backgroundColor: activeTab === 'Ban List' ? '#464646' : '#272727',
+                                        color: activeTab === 'Ban List' ? 'white' : '#D9D9D9',
+                                    }}>
                                     Ban List
                                 </button>
                             </li>
                             <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'Verify Artist' ? 'active' : ''}`} onClick={() => handleTabChange('Verify Artist')}>
+                                <button className={`nav-link ${activeTab === 'Verify Artist' ? 'active' : ''} border-0`}
+                                    onClick={() => handleTabChange('Verify Artist')}
+                                    style={{
+                                        backgroundColor: activeTab === 'Verify Artist' ? '#464646' : '#272727',
+                                        color: activeTab === 'Verify Artist' ? 'white' : '#D9D9D9',
+                                        // fontWeight: activeTab === 'Verify Artist' ? 'bold' : '',
+                                    }}>
                                     Verify Artist
                                 </button>
                             </li>
                         </ul>
-                        <input 
-                            type="text" 
-                            className="form-control w-25" 
-                            placeholder="Search" 
-                            value={searchQuery} 
-                            onChange={handleSearchChange} 
+                        <input
+                            type="text"
+                            className="form-control w-25"
+                            placeholder="Search"
+                            value={searchQuery}
+                            onChange={handleSearchChange}
                         />
                     </div>
 
@@ -106,18 +132,18 @@ function AllArtistsTable({ searchQuery }) {
 
     return (
         <div>
-            <table className="table table-bordered">
+            <table className="table">
                 <thead style={{ borderColor: 'black' }}>
                     <tr className="text-center">
                         <th className="text-danger">Name</th>
                         <th className="text-danger">Joined On</th>
-                        <th className="text-danger">Controls</th>
+                        <th className="text-danger">Actions</th>
                     </tr>
                 </thead>
-                <tbody className='text-center fw-bold' style={{ borderColor: 'black' }}>
+                <tbody className='text-center' style={{ borderColor: 'black' }}>
                     {artists.map(artist => (
                         <tr key={artist.id}>
-                            <td>{artist.name}</td>
+                            <td className='fw-bold'>{artist.name}</td>
                             <td>{formatTimestamp(artist.created_at)}</td>
                             <td>
                                 <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(artist.id)}>
@@ -178,36 +204,36 @@ function BannedArtistsTable({ searchQuery }) {
 
         fetchBannedArtists();
     }, []);
-    
-        return (
-            <div>
-                <table className="table table-bordered">
-                    <thead style={{borderColor: 'black'}}>
-                        <tr className="text-center">
-                            <th className="text-danger">Name</th>
-                            <th className="text-danger">Banned On</th>
-                            <th className="text-danger">Controls</th>
+
+    return (
+        <div>
+            <table className="table table-bordered">
+                <thead style={{ borderColor: 'black' }}>
+                    <tr className="text-center">
+                        <th className="text-danger">Name</th>
+                        <th className="text-danger">Banned On</th>
+                        <th className="text-danger">Controls</th>
+                    </tr>
+                </thead>
+                <tbody className='text-center fw-bold' style={{ borderColor: 'black' }}>
+                    {bannedArtists.map(banned_artist => (
+                        <tr key={banned_artist.id}>
+                            <td>{banned_artist.name}</td>
+                            <td>{formatTimestamp(banned_artist.updated_at)}</td>
+                            <td>
+                                <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(banned_artist.id)}>
+                                    <FontAwesomeIcon icon={faTrash} style={{ color: 'red' }} />
+                                </button>
+                                <button className="bg-transparent border-0" onClick={() => handleRestore(banned_artist.id)}>
+                                    <FontAwesomeIcon icon={faRotate} style={{ color: 'black' }} />
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
-                        {bannedArtists.map(banned_artist => (
-                            <tr key={banned_artist.id}>
-                                <td>{banned_artist.name}</td>
-                                <td>{formatTimestamp(banned_artist.updated_at)}</td>
-                                <td>
-                                    <button className="bg-transparent border-0 me-4" onClick={() => handleDelete(banned_artist.id)}>
-                                        <FontAwesomeIcon icon={faTrash} style={{color: 'red'}} />
-                                    </button>
-                                    <button className="bg-transparent border-0" onClick={() => handleRestore(banned_artist.id)}>
-                                        <FontAwesomeIcon icon={faRotate} style={{color: 'black'}} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
 function VerifyArtistsTable({ searchQuery }) {
@@ -225,36 +251,36 @@ function VerifyArtistsTable({ searchQuery }) {
 
         fetchNotVerifiedArtists();
     }, []);
-    
-        return (
-            <div>
-                <table className="table table-bordered">
-                    <thead style={{borderColor: 'black'}}>
-                        <tr className="text-center">
-                            <th className="text-danger">Name</th>
-                            <th className="text-danger">Attached Document</th>
-                            <th className="text-danger">Controls</th>
+
+    return (
+        <div>
+            <table className="table table-bordered">
+                <thead style={{ borderColor: 'black' }}>
+                    <tr className="text-center">
+                        <th className="text-danger">Name</th>
+                        <th className="text-danger">Attached Document</th>
+                        <th className="text-danger">Controls</th>
+                    </tr>
+                </thead>
+                <tbody className='text-center fw-bold' style={{ borderColor: 'black' }}>
+                    {nverifiedArtists.map(nverified_artist => (
+                        <tr key={nverified_artist.id}>
+                            <td>{nverified_artist.name}</td>
+                            <td>{nverified_artist.joinedOn}</td>
+                            <td>
+                                <button className="bg-transparent border-0 me-4" onClick={() => handleVerify(nverified_artist.id)}>
+                                    <FontAwesomeIcon icon={faCircleCheck} style={{ color: 'lightgreen' }} />
+                                </button>
+                                <button className="bg-transparent border-0" onClick={() => handleBan(nverified_artist.id)}>
+                                    <FontAwesomeIcon icon={faTrash} style={{ color: 'black' }} />
+                                </button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody className='text-center fw-bold' style={{borderColor: 'black'}}>
-                        {nverifiedArtists.map(nverified_artist => (
-                            <tr key={nverified_artist.id}>
-                                <td>{nverified_artist.name}</td>
-                                <td>{nverified_artist.joinedOn}</td>
-                                <td>
-                                    <button className="bg-transparent border-0 me-4" onClick={() => handleVerify(nverified_artist.id)}>
-                                        <FontAwesomeIcon icon={faCircleCheck} style={{color: 'lightgreen'}} />
-                                    </button>
-                                    <button className="bg-transparent border-0" onClick={() => handleBan(nverified_artist.id)}>
-                                        <FontAwesomeIcon icon={faTrash} style={{color: 'black'}} />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
 export default AdminArtistList;

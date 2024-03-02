@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from "../hooks/useAuth";
-import ThreelModal from '../components/ThreelModal';
-import threel_api from '../backend/api';
-import StorageService from '../services/StorageService';
+import { useAuth } from "../../hooks/useAuth";
+import ThreelModal from '../../components/ThreelModal';
+import threel_api from '../../backend/api';
+import StorageService from '../../services/StorageService';
 import Button from 'react-bootstrap/Button';
 
 

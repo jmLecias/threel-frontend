@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from "../hooks/useAuth";
-import ThreelModal from '../components/ThreelModal';
-import threel_api from '../backend/api';
-import StorageService from '../services/StorageService';
+import { useAuth } from "../../hooks/useAuth";
+import ThreelModal from '../../components/ThreelModal';
+import threel_api from '../../backend/api';
+import StorageService from '../../services/StorageService';
 import Button from 'react-bootstrap/Button';
-import AdminNav from './AdminSideNav';
+import AdminNav from '../../components/AdminSideNav';
 import { Chart } from 'react-chartjs-2';
 import 'chart.js/auto';
 
@@ -257,20 +257,11 @@ function AdminDashboard() {
                 onAction={modal.onAction}
             />
             <div className="row" >
-                <div className={`col-md-${isSideNavOpen ? 3 : 12}`}>
+                <div className={`col-md-3`}>
                     <AdminNav isSideNavOpen={isSideNavOpen} toggleSideNav={toggleSideNav} />
                 </div>
-                <div className={`col-md-${isSideNavOpen ? 9 : 12}`}>
-                    <button className="btn float-end" onClick={toggleSideNav} role="button">
-                        <p className={`bi bi-${isSideNavOpen ? 'arrow-right-square-fill' : 'arrow-left-square-fill'} fs-3 text-white`}>+</p>
-                    </button>
-                    <Button className="m-2 float-end" variant="danger" onClick={handleLogout} disabled={(logoutText) === "Logging out..."}>
-                        {logoutText}
-                    </Button>
+                <div className="column"style={{ marginLeft: '400px' , width: '74%'}}>
                     <h1 className="text-white fw-bold">APP STATISTICS</h1>
-                    <h2 className="text-white">
-                        {JSON.parse(ss.getItem('user')).name}
-                    </h2>
                     {!isEmailVerified && (
                         <>
                             <h5 className='text-white'>Did not receive email verification? Click the resend button below.</h5>
@@ -280,10 +271,9 @@ function AdminDashboard() {
                         </>
                     )}
                     <br/>
-                    <br/>
-                    <div className="row">
+                    <div className="column">
                         <div className="col">
-                            <div className={`card col-md-${isSideNavOpen ? 8 : 10}`} >
+                            <div className={`card col-md-8`} style={{ width: '90%', marginLeft: '40px'}}>
                                 <div className="card-body bg-dark">
                                     <h3 className="card-title text-danger fw-bold d-flex align-items-center">App Downloads 
                                     <select className="form-select ms-auto" value={timeInterval} onChange={handleIntervalChange} style={{ fontSize: 'small', width: '100px' }}>
@@ -292,7 +282,7 @@ function AdminDashboard() {
                                     </select></h3>
                                     
                                     <div className="chart-container d-flex justify-content-between align-items-center">
-                                        <Chart type="line" data={downloadsChart} options={linechartOptions} height={300} width={500} />
+                                        <Chart type="line" data={downloadsChart} options={linechartOptions} height={300} width={800} />
                                         <p className="text-white fw-bold">    Highest Downloads: <strong className="text-warning">
                                             {timeInterval === 'months' ? downloadsHighestLabelMonthly : downloadsHighestLabelYearly}
                                         </strong><br /><br />
@@ -303,9 +293,11 @@ function AdminDashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col">
-                            <div className={`card col-md-${isSideNavOpen ? 8 : 10}`}>
-                                <div className="card-body bg-dark">
+                        <br/>
+                        <br/>
+                        <div className="col ">
+                            <div className={`card col-md-8`} style={{ width: '90%',  marginLeft: '40px'}}>
+                                <div className="card-body bg-dark p-5">
                                     <h3 className="card-title text-danger fw-bold">Listeners</h3>
                                     <div className="chart-container d-flex justify-content-between align-items-center">
                                         <Chart type="pie" data={freeChart} options={piechartOptions} height={300} width={500} />
@@ -315,6 +307,10 @@ function AdminDashboard() {
                                 </div>
                             </div>
                         </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>

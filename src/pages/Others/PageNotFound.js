@@ -10,7 +10,7 @@ function NotFoundPage() {
                 <div className="question-mark">?</div>
             </div>
             <h1>Page not found!</h1>
-            <NavLink to="/home" className="home-button">Home</NavLink>
+            <NavLink to="/admin/dashboard" className="home-button">Back</NavLink>
         </div>
     );
 }

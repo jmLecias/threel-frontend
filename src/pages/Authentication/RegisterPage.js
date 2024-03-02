@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
@@ -16,9 +16,9 @@ function Register() {
 
     const [loader, loaderOn] = useState("Register");
 
-    const [show, setShow] = useState(true);
+    const [showTerms, setShowTerms] = useState(false);
 
-    const [didAgree, setDidAgree] = useState(false);
+    const [terms, setTerms] = useState(false);
 
     const [state, setState] = useState({
         name: '',
@@ -65,10 +65,10 @@ function Register() {
 
         loaderOn("Registering...");
 
-        if (didAgree) {
+        if (terms) {
             register(credentials).then((isRegistered) => {
                 if (isRegistered === true) {
-                    navigate("/adminboard?status=verification_sent", { replace: true });
+                    navigate("/admin/dashboard?status=verification_sent", { replace: true });
                     loaderOn("Register");
                 }
             }).catch((error) => {
@@ -91,7 +91,7 @@ function Register() {
     const validateForm = () => {
         const { name, username, email, password, confirmPassword, accountType } = state;
         let errors = {};
-    
+
         if (!name.trim()) {
             errors.name = "Name is required";
         } else if (name.length > 100) {
@@ -103,7 +103,7 @@ function Register() {
         } else if (username.length > 25) {
             errors.username = "Username cannot exceed 25 characters";
         }
-    
+
         if (!email.trim()) {
             errors.email = "Email is required";
         } else {
@@ -128,14 +128,14 @@ function Register() {
         if (accountType === null | accountType === "") {
             errors.accountType = "Choose user Type";
         }
-    
+
         setState(prevState => ({
             ...prevState,
             errors: errors
         }));
-    
+
         return Object.keys(errors).length === 0;
-    };    
+    };
 
     return (
         <div className="App">
@@ -144,13 +144,13 @@ function Register() {
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
-                show={show}
+                show={showTerms}
                 backdrop="static"
                 keyboard={false}
             >
                 <Modal.Header>
                     <Modal.Title>
-                        <h1 className="modal-title">User Agreement</h1>
+                        <h2 className="modal-title">Terms and Conditions</h2>
                     </Modal.Title>
                 </Modal.Header>
 
@@ -162,17 +162,16 @@ function Register() {
                     <Button
                         variant="secondary"
                         onClick={() => {
-                            navigate("/login");
-                        }
-                        }
-                    >Back</Button>
+                            setShowTerms(false);
+                            setTerms(false);
+                        }}
+                    >Close</Button>
                     <Button
                         variant="primary"
                         onClick={() => {
-                            setShow(false);
-                            setDidAgree(true);
-                        }
-                        }
+                            setShowTerms(false);
+                            setTerms(true);
+                        }}
                     >Accept</Button>
                 </Modal.Footer>
             </Modal>
@@ -183,93 +182,109 @@ function Register() {
                         <Col md={6} className='w-75'>
                             <h2 className="text-white">REGISTER</h2>
                             <Form className='mb-3'>
-                                <input
-                                    name="name"
-                                    type="text"
-                                    id="name"
-                                    placeholder="Name"
-                                    value={state.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="form-control mb-3"
-                                />
-                                {state.errors.name && (
-                                    <div className="error-message">{state.errors.name}</div>
-                                )}
-                                <input
-                                    name='username'
-                                    type='text'
-                                    id='username'
-                                    placeholder='Username'
-                                    value={state.username}
-                                    onChange={handleChange}
-                                    required
-                                    className="form-control mb-3"
-                                />
-                                {state.errors.username && (
-                                    <div className="error-message">{state.errors.username}</div>
-                                )}
-                                <input
-                                    name='email'
-                                    type='email'
-                                    id='email'
-                                    placeholder='Email'
-                                    value={state.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="form-control mb-3"
-                                />
-                                {state.errors.email && (
-                                    <div className="error-message">{state.errors.email}</div>
-                                )}
-                                <input
-                                    name='password'
-                                    id='password'
-                                    type='password'
-                                    placeholder='Password'
-                                    value={state.password}
-                                    onChange={handleChange}
-                                    minLength="8"
-                                    required
-                                    className="form-control mb-3"
-                                />
-                                {state.errors.password && (
-                                    <div className="error-message">{state.errors.password}</div>
-                                )}
-
-                                <input
-                                    name='confirmPassword'
-                                    id='confirm-password'
-                                    type='password'
-                                    placeholder='Confirm Password'
-                                    value={state.confirmPassword}
-                                    onChange={handleChange}
-                                    minLength="8"
-                                    required
-                                    className="form-control mb-3"
-                                />
-                                {state.errors.confirmPassword && (
-                                    <div className="error-message">
-                                        {state.errors.confirmPassword}
-                                    </div>
-                                )}
-
-                                <select name="accountType" value={state.accountType} onChange={handleChange} className="form-select mb-3">
-                                    <option value="" disabled>Account Type</option>
-                                    <option value="listener">Listener</option>
-                                    <option value="artist">Artist</option>
-                                </select>
-                                {state.errors.accountType && (
-                                    <div className="error-message">
-                                        {state.errors.accountType}
-                                    </div>
-                                )}
+                                <div className='mb-3'>
+                                    <input
+                                        name="name"
+                                        type="text"
+                                        id="name"
+                                        placeholder="Name"
+                                        value={state.name}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                    {state.errors.name && (
+                                        <div className="error-message">{state.errors.name}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3'>
+                                    <input
+                                        name='username'
+                                        type='text'
+                                        id='username'
+                                        placeholder='Username'
+                                        value={state.username}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                    {state.errors.username && (
+                                        <div className="error-message">{state.errors.username}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3'>
+                                    <input
+                                        name='email'
+                                        type='email'
+                                        id='email'
+                                        placeholder='Email'
+                                        value={state.email}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                    {state.errors.email && (
+                                        <div className="error-message">{state.errors.email}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3'>
+                                    <input
+                                        name='password'
+                                        id='password'
+                                        type='password'
+                                        placeholder='Password'
+                                        value={state.password}
+                                        onChange={handleChange}
+                                        minLength="8"
+                                        required
+                                        className="form-control"
+                                    />
+                                    {state.errors.password && (
+                                        <div className="error-message">{state.errors.password}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3'>
+                                    <input
+                                        name='confirmPassword'
+                                        id='confirm-password'
+                                        type='password'
+                                        placeholder='Confirm Password'
+                                        value={state.confirmPassword}
+                                        onChange={handleChange}
+                                        required
+                                        className="form-control"
+                                    />
+                                    {state.errors.confirmPassword && (
+                                        <div className="error-message">{state.errors.confirmPassword}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3'>
+                                    <select name="accountType" value={state.accountType} onChange={handleChange} className="form-select">
+                                        <option value="" disabled>Account Type</option>
+                                        <option value="listener">Listener</option>
+                                        <option value="artist">Artist</option>
+                                    </select>
+                                    {state.errors.accountType && (
+                                        <div className="error-message">{state.errors.accountType}</div>
+                                    )}
+                                </div>
+                                <div className='mb-3 d-flex'>
+                                    <input
+                                        name='terms'
+                                        id='terms'
+                                        type='checkbox'
+                                        onClick={() => setTerms(!terms)}
+                                        required
+                                        checked={terms}
+                                    />
+                                    <p className='mx-auto my-auto ms-2 text-small'>Read the <span style={{cursor: 'pointer'}}className='text-danger text-decoration-underline' onClick={() => setShowTerms(true)}>Terms and Conditions </span> of THREEL</p>
+                                </div>
 
                                 <p className='mx-auto'>Already have an Account? <Link to="/login" className="text-white fst-italic fw-bold">Login Now!</Link></p>
 
-                                <button type="submit" className="btn btn-lg custom-btn-prim mb-5" onClick={handleSubmit} disabled={loader === "Registering..."}>
-                                    <h6 className='my-auto mx-auto text-white'>{loader}</h6>
+                                <button type="submit" className="btn btn-lg custom-btn-prim mb-5 d-flex mx-auto" onClick={handleSubmit} disabled={loader === "Registering..."}>
                                     {loader === "Registering..." && <Spinner animation="border" size='sm' />}
+                                    <h6 className='my-auto mx-auto text-white'>{loader}</h6>
                                 </button>
                             </Form>
                         </Col>

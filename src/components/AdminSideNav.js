@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { NavLink } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import { useAuth } from "../hooks/useAuth";
+import StorageService from '../services/StorageService';
 
-function AdminNav({ isSideNavOpen, toggleSideNav }) {
+function AdminNav() {
+    const ss = new StorageService();
+    const { logout, me, user } = useAuth();
+    const navigate = useNavigate();
+    const [logoutText, setLogoutText] = useState("Logout");
+
+    const handleLogout = (event) => {
+        event.preventDefault();
+        setLogoutText("Logging out...");
+        logout().then((isLoggedOut) => {
+            if (isLoggedOut) {
+                setLogoutText("Logout");
+                navigate("/login")
+            }
+        }).catch(() => {
+            setLogoutText("Logout");
+            toast.error("Error while logging out", {
+                autoClose: 3000,
+                pauseOnHover: true,
+            });
+        });
+    }
+
     return (
-        <div className={`offcanvas offcanvas-start bg-dark ${isSideNavOpen ? 'show' : ''}`} tabIndex="-1" id="offcanvas">
+        <div className={`offcanvas offcanvas-start bg-dark show`} id="offcanvas">
             <div className="offcanvas-header">
-                <h5 className="offcanvas-title text-white display-6">Hello, <span className="display-6 fw-bold">Admin</span></h5>
-                <button type="button" className="btn-close text-reset" onClick={toggleSideNav} aria-label="Close"></button>
+                <h5 className="offcanvas-title text-white display-6">Hello, <span className="display-6 fw-bold">{JSON.parse(ss.getItem('user')).username}</span></h5>
             </div>
             <div className="offcanvas-body px-0">
                 <ul className="nav flex-column" id="menu">
@@ -35,7 +61,13 @@ function AdminNav({ isSideNavOpen, toggleSideNav }) {
                     </li>
                 </ul>
             </div>
+            <div className="offcanvas-header">
+                <Button className="m-2 float-end" variant="danger" onClick={handleLogout} disabled={(logoutText) === "Logging out..."}>
+                    {logoutText}
+                </Button>
+            </div>
         </div>
+
     );
 }
 
