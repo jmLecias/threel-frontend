@@ -1,10 +1,10 @@
 import React from 'react';
 
-import InfoCard from '../../components/InfoCard';
-import PieChart from '../../components/PieChart';
-import LineChart from '../../components/LineChart';
+import InfoCard from '../../components/Information/InfoCard';
+import PieChart from '../../components/Charts/PieChart';
+import LineChart from '../../components/Charts/LineChart';
 
-import ThreelBreadcrumbs from '../../components/ThreelBreadcrumbs';
+import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
 
 const AdminDashboard = () => {
     const breadcrumbs=[

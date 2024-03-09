@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 const ContentTabs = ({ tabs, onTabChange }) => {
     const [activeTab, setActiveTab] = useState(tabs[0]);

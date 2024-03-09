@@ -50,7 +50,7 @@ function Login() {
 
         login(credentials).then((isLoggedIn) => {
             if (isLoggedIn === true) {
-                navigate("/admin/dashboard", { replace: true });
+                navigate("/", { replace: true });
                 loaderOn("Log in");
             }
         }).catch((error) => {
@@ -67,7 +67,7 @@ function Login() {
     const validateForm = () => {
         const { email, password } = state;
         let errors = {};
-    
+
         // Check if email is empty
         if (!email.trim()) {
             errors.email = "Email is required";
@@ -104,33 +104,37 @@ function Login() {
                             <Col md={6} className="w-75">
                                 <h2 className="text-white mb-4">Login</h2>
                                 <Form className='mb-3'>
-                            
-                                    <input
-                                        name='email'
-                                        type='email'
-                                        id='email'
-                                        placeholder='Email'
-                                        value={state.email}
-                                        onChange={handleChange}
-                                        required
-                                        className="form-control mb-3"
-                                    />
-                                    {state.errors.email && (
-                                        <div className="error-message mt-n2">{state.errors.email}</div>
-                                    )}
-                                    <input
-                                        name='password'
-                                        id='password'
-                                        type='password'
-                                        placeholder='Password'
-                                        value={state.password}
-                                        onChange={handleChange}
-                                        required
-                                        className="form-control mb-3"
-                                    />
-                                    {state.errors.password && (
-                                        <div className="error-message mt-n4">{state.errors.password}</div>
-                                    )}
+
+                                    <div className='mb-3'>
+                                        <input
+                                            name='email'
+                                            type='email'
+                                            id='email'
+                                            placeholder='Email'
+                                            value={state.email}
+                                            onChange={handleChange}
+                                            required
+                                            className="form-control"
+                                        />
+                                        {state.errors.email && (
+                                            <div className="error-message">{state.errors.email}</div>
+                                        )}
+                                    </div>
+                                    <div className='mb-3'>
+                                        <input
+                                            name='password'
+                                            id='password'
+                                            type='password'
+                                            placeholder='Password'
+                                            value={state.password}
+                                            onChange={handleChange}
+                                            required
+                                            className="form-control"
+                                        />
+                                        {state.errors.password && (
+                                            <div className="error-message">{state.errors.password}</div>
+                                        )}
+                                    </div>
 
                                     <p className='mx-auto'>Don't have an Account? <Link to="/register" className="text-white fst-italic fw-bold">Register Here!</Link></p>
 

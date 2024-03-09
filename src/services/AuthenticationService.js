@@ -14,6 +14,7 @@ class AuthenticationService {
         if (response.status === 200) {
             ss.removeItem('access_token');
             ss.removeItem('user');
+            ss.removeItem('is_token_valid');
             return true;
         } else {
             return false;
@@ -29,7 +30,7 @@ class AuthenticationService {
     
             ss.storeItem('access_token', accessToken);
             ss.storeItem('user', JSON.stringify(user));
-            this.setAuthorizationHeader(accessToken);
+            // this.setAuthorizationHeader(accessToken);
     
             return true;
         } else {
@@ -46,7 +47,6 @@ class AuthenticationService {
     
             ss.storeItem('access_token', accessToken);
             ss.storeItem('user', JSON.stringify(user));
-            this.setAuthorizationHeader(accessToken);
 
             return true;
         } else {
@@ -58,23 +58,13 @@ class AuthenticationService {
         const response = await this.threel_api.post('/me');
         
         if (response.status === 200) {
-            const user = response.data;
-            console.log(user);
+            const user = response.data.user;
     
             ss.storeItem('user', JSON.stringify(user));
-            console.log("debug" + ss.getItem('user'));
 
-            return true;
+            return response;
         } else {
-            return false;
-        }
-    }
-
-    setAuthorizationHeader(token) {
-        if (token) {
-            this.threel_api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        } else {
-            // Handle cases where token is not available or invalid
+            return response;
         }
     }
 }

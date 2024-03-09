@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import ThreelModal from '../../components/ThreelModal';
+import ThreelModal from '../../components/Information/ThreelModal';
 import StorageService from '../../services/StorageService';
 import { useAuth } from "../../hooks/useAuth";
 
-import AdminSidebar from '../../components/AdminSidebar';
+import AdminSidebar from '../../components/Navigation/AdminSidebar';
 
 import AdminListeners from './AdminListeners';
 import AdminDashboard from './AdminDashboard';
@@ -18,8 +18,7 @@ const Admin = ({ content }) => {
     const { me } = useAuth();
     const ss = new StorageService();
 
-    const [isEmailVerified, setIsEmailVerified] = useState(
-        JSON.parse(ss.getItem('user')).email_verified_at !== null);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
 
     const [modal, setModal] = useState({
         show: false,
@@ -35,7 +34,9 @@ const Admin = ({ content }) => {
         const status = urlParams.get('status');
 
         me().then(() => {
-            setIsEmailVerified(JSON.parse(ss.getItem('user')).email_verified_at !== null);
+            if(ss.getItem('user') !== null) {
+                setIsEmailVerified(JSON.parse(ss.getItem('user')).email_verified_at !== null);
+            }
         }).catch((error) => {
             console.log(error);
         });
@@ -83,10 +84,10 @@ const Admin = ({ content }) => {
                 pauseOnHover: true,
             });
         }
-    }, []);
+    }, [me, navigate, ss, urlParams]);
 
     return (
-        <div style={{ display: 'flex', height: '100vh' }}>
+        <div className='admin-container'>
             <ToastContainer />
 
             <ThreelModal
@@ -116,6 +117,8 @@ const Admin = ({ content }) => {
                 {content === 'videocasts' && <NotFoundPage />}
                 {/* Pricing Content */}
                 {content === 'pricing' && <NotFoundPage />}
+                {/* Page not Found */}
+                {content === 'not_found' && <NotFoundPage />}
             </div>
         </div>
     );

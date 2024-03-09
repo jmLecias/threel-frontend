@@ -3,12 +3,8 @@ import { ProSidebar, Menu, MenuItem, SubMenu, SidebarFooter, SidebarHeader, Side
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
-import StorageService from '../services/StorageService';
-
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../hooks/useAuth";
-
-import 'react-pro-sidebar/dist/css/styles.css';
+import { useAuth } from "../../hooks/useAuth";
 
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
@@ -21,9 +17,7 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
 
 const AdminSidebar = () => {
-    const ss = new StorageService();
-    const username = JSON.parse(ss.getItem('user')).username;
-    const { logout } = useAuth();
+    const { logout, home, user } = useAuth();
     const [logoutText, setLogoutText] = useState("Logout");
     const navigate = useNavigate();
 
@@ -33,7 +27,7 @@ const AdminSidebar = () => {
         logout().then((isLoggedOut) => {
             if (isLoggedOut) {
                 setLogoutText("Logout");
-                navigate("/login")
+                navigate(home)
             }
         }).catch(() => {
             setLogoutText("Logout");
@@ -48,7 +42,11 @@ const AdminSidebar = () => {
     return (
         <ProSidebar>
             <SidebarHeader style={{ padding: '20px' }}>
-                <h5><span className='logo-text fw-bold'>THREEL</span> | Admin</h5>
+                <h5>
+                    <Link to="/" style={{textDecoration: 'none'}}>
+                        <span className='logo-text'>THREEL</span>
+                    </Link> | Admin
+                </h5>
             </SidebarHeader>
             <SidebarContent>
                 <Menu >
@@ -62,7 +60,7 @@ const AdminSidebar = () => {
             </SidebarContent>
             <SidebarFooter>
                 <Menu>
-                    <SubMenu icon={<FaUserCircle size={25} />} title={username}>
+                    <SubMenu icon={<FaUserCircle size={25} />} title={user.username}>
                         <MenuItem 
                             icon={<IoSettingsSharp size={20}/>}
                             onClick={() => toast.info("Account Settings")}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
-import ContentTabs from '../../components/ContentTabs';
-import ThreelBreadcrumbs from '../../components/ThreelBreadcrumbs';
+import ContentTabs from '../../components/Navigation/ContentTabs';
+import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
 import { useNavigate } from 'react-router-dom';
 import threel_api from '../../backend/api';
 
@@ -42,6 +42,9 @@ const AdminManageListeners = () => {
             name: 'id',
             selector: row => row.id,
             sortable: true,
+            minWidth: '100px',
+            maxWidth: '200px',
+            width: '100px',
         },
         {
             name: 'Name',
@@ -51,6 +54,23 @@ const AdminManageListeners = () => {
         {
             name: 'Email',
             selector: row => row.email,
+            sortable: true,
+        },
+        {
+            name: 'Created At',
+            selector: row => {
+                const date = new Date(row.created_at);
+                // Specify the locale and options for formatting
+                const options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                // Use the specified locale and options to format the date
+                return new Intl.DateTimeFormat('en-US', options).format(date);
+            },
             sortable: true,
         },
         {
@@ -89,7 +109,7 @@ const AdminManageListeners = () => {
                             size={22}
                             title="Unban" />
                         <FaUserEdit
-                            onClick={() => navigate('/admin/listeners/profile')}
+                            onClick={() => navigate(`/admin/listeners/profile`)}
                             color='blue'
                             size={27}
                             title="Edit" />
@@ -140,7 +160,6 @@ const AdminManageListeners = () => {
 
         setResult(newResult);
     };
-
 
     const customStyles = {
         headRow: {

@@ -1,65 +1,54 @@
-import { useEffect } from 'react';
+import React from 'react';
 import './css/App.css';
+import 'chart.js/auto'; // VERY IMPORTANT
+import 'react-pro-sidebar/dist/css/styles.css'; // VERY IMPORTANT
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import Login from './pages/Authentication/LoginPage';
 import Register from './pages/Authentication/RegisterPage';
-import Player from './pages/User/PlayerPage';
-import AdminDashboard from './pages/Others/AdminDashboardPage';
-import AdminArtistList from './pages/Others/AdminArtistListPage';
-import AdminListenerList from './pages/Others/AdminListenerListPage';
 import NotFoundPage from './pages/Others/PageNotFound';
 import Admin from './pages/Admin/Admin';
+import Listener from './pages/Listeners/Listener';
 
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/Route/ProtectedRoute";
+import PublicRoute from './components/Route/PublicRoute';
+
 import { AuthProvider } from "./hooks/useAuth";
+import { ArtistProvider } from './hooks/useArtist';
+
+
 
 function App() {
   return (
     <Router>
       <AuthProvider>
+      <ArtistProvider>
         <Routes>
-          <Route index element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route index element={<Listener content={'explore'}/>} />
+          <Route path="/register" element={<PublicRoute><Register/></PublicRoute>} />
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/admin/*" element={
-            <Routes>
-              <Route path="dashboard" element={<Admin content={'dashboard'} />} />
-              <Route path="listeners/*" element={
-                <Routes>
-                  <Route path="/" element={<Admin content={'listenersList'} />} />
-                  <Route path="profile" element={<Admin content={'listenerProfile'} />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              } />
-              <Route path="music" element={<Admin content={'music'} />} />
-              <Route path="podcasts" element={<Admin content={'podcasts'} />} />
-              <Route path="videocasts" element={<Admin content={'videocasts'} />} />
-              <Route path="pricing" element={<Admin content={'pricing'} />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          } />
-          <Route path="/artistlist" element={
             <ProtectedRoute>
-              <AdminArtistList />
+              <Routes>
+                <Route path="dashboard" element={<Admin content={'dashboard'} />} />
+                <Route path="listeners/*" element={
+                  <Routes>
+                    <Route path="/" element={<Admin content={'listenersList'} />} />
+                    <Route path="profile" element={<Admin content={'listenerProfile'} />} />
+                    <Route path="*" element={<Admin content={'not_found'} />} />
+                  </Routes>
+                } />
+                <Route path="music" element={<Admin content={'music'} />} />
+                <Route path="podcasts" element={<Admin content={'podcasts'} />} />
+                <Route path="videocasts" element={<Admin content={'videocasts'} />} />
+                <Route path="pricing" element={<Admin content={'pricing'} />} />
+                <Route path="*" element={<Admin content={'not_found'} />} />
+              </Routes>
             </ProtectedRoute>
           } />
-          <Route path="/listenerlist" element={
-            <ProtectedRoute>
-              <AdminListenerList />
-            </ProtectedRoute>
-          } />
-          {/* <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <Player />
-              </ProtectedRoute>
-            }
-          /> */}
-          {/* Should use a different view for routes not found */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+      </ArtistProvider>
       </AuthProvider>
     </Router>
   );

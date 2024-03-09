@@ -68,7 +68,7 @@ function Register() {
         if (terms) {
             register(credentials).then((isRegistered) => {
                 if (isRegistered === true) {
-                    navigate("/admin/dashboard?status=verification_sent", { replace: true });
+                    navigate("/", { replace: true });
                     loaderOn("Register");
                 }
             }).catch((error) => {
