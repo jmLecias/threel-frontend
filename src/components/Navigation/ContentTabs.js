@@ -1,25 +1,26 @@
-import React, { useState } from 'react';
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import React from 'react';
 
-const ContentTabs = ({ tabs, onTabChange }) => {
-    const [activeTab, setActiveTab] = useState(tabs[0]);
+import { useUser } from '../../hooks/useUser';
+
+const ContentTabs = () => {
+
+    const { setActiveTab, setResult, users, tabs, activeTab} = useUser();
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
-        onTabChange(tab);
-    };
+        setResult(tab.filter(users));
+    }
 
     return (
         <div className='d-flex flex-row'>
             {tabs.map((tab, index) => (
                 <h6
                     key={index}
-                    className={`me-4 fw-light ${activeTab === tab ? 'border-bottom border-3 border-danger' : ''}`}
-                    style={{cursor: 'pointer'}}
+                    className={`me-4 fw-light ${activeTab.title === tab.title ? 'border-bottom border-3 border-danger' : ''}`}
+                    style={{ cursor: 'pointer' }}
                     onClick={() => handleTabClick(tab)}
                 >
-                    {tab}
+                    {tab.title}
                 </h6>
             ))}
         </div>

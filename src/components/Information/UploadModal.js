@@ -22,6 +22,10 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
         setSelectedContent(file);
     };
 
+    const handleUpload = () => {
+        
+    }
+
     return (
         <Modal
             size="lg"

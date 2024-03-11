@@ -13,10 +13,11 @@ export const ArtistProvider = ({ children }) => {
     });
 
     const [upload, setUpload] = useState({
-        type: '',
+        type: null,
         title: '',
         description: '',
         thumbnail: null,
+        content: null,
     });
 
     const value = useMemo(

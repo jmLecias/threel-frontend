@@ -2,49 +2,34 @@ import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import ContentTabs from '../../components/Navigation/ContentTabs';
 import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
-import { useNavigate } from 'react-router-dom';
-import threel_api from '../../backend/api';
 
 import { BiArrowToLeft, BiArrowToRight, BiSolidChevronLeft, BiSolidChevronRight } from "react-icons/bi";
-import { RiDeleteBin2Fill } from "react-icons/ri";
-import { TiCancel } from "react-icons/ti";
-import { FaClipboardCheck } from "react-icons/fa6";
-import { FaArrowRotateLeft } from "react-icons/fa6";
-import { FaUserEdit } from "react-icons/fa";
+
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 
 const AdminManageListeners = () => {
-    const [data, setData] = useState([]);
-    const [result, setResult] = useState([]);
-
-    const tabs = ['All', 'Verification Requests', 'Banned'];
-    const breadcrumbs = [
-        { label: 'Manage Listeners', link: '/admin/listeners' },
-    ]
 
     const navigate = useNavigate();
 
-    const fetchUsers = async () => {
-        try {
-            const response = await threel_api.post('/display');
-            setData(response.data.artists);
-            setResult(response.data.artists);
-        } catch (error) {
-            console.error('Error fetching artists:', error);
-        }
-    };
+    const {
+        tabs,
+        users,
+        result,
+        setResult,
+        activeTab,
+    } = useUser();
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    const breadcrumbs = [
+        { label: 'Manage Listeners', link: '/admin/listeners' },
+    ];
 
     const columns = [
         {
             name: 'id',
             selector: row => row.id,
             sortable: true,
-            minWidth: '100px',
-            maxWidth: '200px',
-            width: '100px',
+            width: '70px'
         },
         {
             name: 'Name',
@@ -60,7 +45,6 @@ const AdminManageListeners = () => {
             name: 'Created At',
             selector: row => {
                 const date = new Date(row.created_at);
-                // Specify the locale and options for formatting
                 const options = {
                     year: 'numeric',
                     month: 'short',
@@ -68,98 +52,34 @@ const AdminManageListeners = () => {
                     hour: '2-digit',
                     minute: '2-digit'
                 };
-                // Use the specified locale and options to format the date
                 return new Intl.DateTimeFormat('en-US', options).format(date);
             },
             sortable: true,
         },
         {
             name: 'Type',
-            selector: row => row.user_type,
+            selector: row => row.user_type.user_type,
             sortable: true,
         },
         {
             name: 'Status',
-            selector: row => row.is_banned,
+            selector: row => row.status_type.status_type,
             sortable: true,
         },
         {
             name: 'Actions',
             cell: row => {
+                const actionComponents = activeTab.actions.map(
+                    (action, i) => action(row.id, i));
+
                 return (
                     <div>
-                        <RiDeleteBin2Fill
-                            onClick={() => handleAction(row)}
-                            color='red'
-                            size={25}
-                            title="Delete" />
-                        <TiCancel
-                            onClick={() => handleAction(row)}
-                            color='grey'
-                            size={30}
-                            title="Ban" />
-                        <FaClipboardCheck
-                            onClick={() => handleAction(row)}
-                            color='green'
-                            size={25}
-                            title="Verify" />
-                        <FaArrowRotateLeft
-                            onClick={() => handleAction(row)}
-                            color='grey'
-                            size={22}
-                            title="Unban" />
-                        <FaUserEdit
-                            onClick={() => navigate(`/admin/listeners/profile`)}
-                            color='blue'
-                            size={27}
-                            title="Edit" />
+                        {actionComponents}
                     </div>
-                )
+                );
             }
         },
     ];
-
-    const handleAction = (row) => {
-        console.log('Action 1 for row:', row);
-        // Implement your logic for action 1 using the data from the row
-    };
-
-    const handleTabChange = (tab) => {
-        var filteredData;
-
-        switch (tab) {
-            case tabs[0]:
-                setResult(data);
-                break;
-            case tabs[1]:
-                filteredData = data.filter(row => row.user_type === 'listener');
-                setResult(filteredData);
-                break;
-            case tabs[2]:
-                filteredData = data.filter(row => row.is_banned);
-                setResult(filteredData);
-                break;
-            default:
-                break;
-        }
-    };
-
-    const handleFilterChange = (event) => {
-        const searchFilter = event.target.value.toLowerCase();
-
-        const newResult = data.filter(row => {
-            return columns.some(column => {
-                const columnSelector = String(column.selector);
-                const indexOfDot = columnSelector.indexOf('.') + 1;
-                const columnName = columnSelector.substring(indexOfDot, columnSelector.length);
-
-                const columnValue = String(row[columnName]).toLowerCase();
-                return columnValue.includes(searchFilter);
-            });
-        });
-
-        setResult(newResult);
-    };
 
     const customStyles = {
         headRow: {
@@ -186,6 +106,30 @@ const AdminManageListeners = () => {
         selectAllRowsItem: true,
     };
 
+
+    const handleQueryChange = (event) => {
+        const searchFilter = event.target.value.toLowerCase();
+
+        const newResult = users.filter(row => {
+            return columns.some(column => {
+                const columnSelector = String(column.selector);
+                const indexOfDot = columnSelector.indexOf('.') + 1;
+                const columnName = columnSelector.substring(indexOfDot, columnSelector.length);
+
+                const columnValue = String(row[columnName]).toLowerCase();
+                return columnValue.includes(searchFilter);
+            });
+        });
+
+        if (String(searchFilter).length === 0) {
+            setResult(activeTab.filter(users));
+        } else {
+            setResult(newResult);
+        }
+    };
+
+
+
     return (
         <div className='admin-normal-container'>
             <div className='admin-content-header'>
@@ -193,16 +137,12 @@ const AdminManageListeners = () => {
             </div>
 
             <div className='d-flex justify-content-between'>
-                <ContentTabs
-                    tabs={tabs}
-                    onTabChange={handleTabChange}
-                />
+                <ContentTabs/>
                 <input
                     className='form-control w-25'
                     type="text"
                     placeholder="Search"
-                    onChange={handleFilterChange}
-
+                    onChange={handleQueryChange}
                 />
             </div>
             <div className='data-table box-shadow'>

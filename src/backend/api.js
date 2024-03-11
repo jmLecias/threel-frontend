@@ -43,19 +43,19 @@ threel_api.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
 
-        if (error.response.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+        // if (error.response.status === 401 && !originalRequest._retry) {
+        //     originalRequest._retry = true;
 
-            try {
-                const newAccessToken = await refreshToken();
+        //     try {
+        //         const newAccessToken = await refreshToken();
 
-                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return threel_api(originalRequest);
-            } catch (refreshError) {
-                // Handle refresh token failure (e.g., redirect to login page)
-                console.error('Failed to refresh token:', refreshError);
-            }
-        }
+        //         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        //         return threel_api(originalRequest);
+        //     } catch (refreshError) {
+        //         // Handle refresh token failure (e.g., redirect to login page)
+        //         console.error('Failed to refresh token:', refreshError);
+        //     }
+        // }
         return Promise.reject(error);
     }
 );

@@ -18,13 +18,13 @@ const UploadDropdown = ({ icon }) => {
         setUpload(prev => ({...prev, type: type}));
 
         switch(type) {
-            case 'music':
+            case 1:
                 setUploadModal(prev => ({...prev, title: 'Upload Music'}));
                 break;
-            case 'podcast':
+            case 2:
                 setUploadModal(prev => ({...prev, title: 'Upload Podcast'}));
                 break;
-            case 'videocast':
+            case 3:
                 setUploadModal(prev => ({...prev, title: 'Upload Videocast'}));
                 break;
         }
@@ -37,15 +37,15 @@ const UploadDropdown = ({ icon }) => {
             </div>
             {isOpen && (
                 <div className='upload-dropdown'>
-                    <div className='upload-dropdown-item' onClick={() => handleUpload('music')}>
+                    <div className='upload-dropdown-item' onClick={() => handleUpload(1)}>
                         <IoMdMusicalNote size={18} />
                         <span className='upload-dropdown-text'>Upload Music</span>
                     </div>
-                    <div className='upload-dropdown-item' onClick={() => handleUpload('podcast')}>
+                    <div className='upload-dropdown-item' onClick={() => handleUpload(2)}>
                         <FaPodcast size={18} />
                         <span className='upload-dropdown-text'>Upload Podcast</span>
                     </div>
-                    <div className='upload-dropdown-item' onClick={() => handleUpload('videocast')}>
+                    <div className='upload-dropdown-item' onClick={() => handleUpload(3)}>
                         <FaVideo size={18} />
                         <span className='upload-dropdown-text'>Upload Videocast</span>
                     </div>

@@ -1,54 +1,192 @@
 import { createContext, useContext, useMemo, useEffect, useState } from "react";
-import StorageService from "../services/StorageService";
-import threel_api from "../backend/api";
 import { useNavigate, useLocation } from "react-router-dom";
+import threel_api from "../backend/api";
+
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import { TiCancel } from "react-icons/ti";
+import { FaClipboardCheck } from "react-icons/fa6";
+import { FaArrowRotateLeft } from "react-icons/fa6";
+import { FaUserEdit } from "react-icons/fa";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [data, setData] = useState([]);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const routePrefix = '/admin/manage-users';
+
+    const [users, setUsers] = useState([]);
+
+    const Deactivate = (id, i) => {
+        return (
+            <TiCancel
+                key={i}
+                onClick={() => deactivateUser(id)}
+                color='grey'
+                size={30}
+                title="Deactivate" />
+        )
+    }
+    const Activate = (id, i) => {
+        return (
+            <FaArrowRotateLeft
+                key={i}
+                onClick={() => activateUser(id)}
+                color='grey'
+                size={22}
+                title="Activate" />
+        )
+    }
+
+    const Edit = (id, i) => {
+        return (
+            <FaUserEdit
+                key={i}
+                onClick={() => navigate(`/admin/listeners/profile`)}
+                color='blue'
+                size={27}
+                title="Edit" />
+        )
+    }
+
+    const Delete = (id, i) => {
+        return (
+            <RiDeleteBin2Fill
+                key={i}
+                onClick={() => deleteUser(id)}
+                color='red'
+                size={25}
+                title="Delete" />
+        )
+    }
+
+    const Verify = (id, i) => {
+        return (
+            <FaClipboardCheck
+                key={i}
+                onClick={() => verifyArtist(id)}
+                color='green'
+                size={25}
+                title="Verify" />
+        )
+    }
+
+    const tabs = [
+        {
+            title: 'All',
+            filter: (data) => data,
+            actions: [Deactivate, Edit, Delete]
+        },
+        {
+            title: 'Verification Requests',
+            filter: (data) => data.filter(row => row.status_type.id === 2),
+            actions: [Verify, Edit]
+        },
+        {
+            title: 'Deactivated',
+            filter: (data) => data.filter(row => row.status_type.id === 3),
+            actions: [Activate, Edit, Delete]
+        },
+    ];
+
     const [result, setResult] = useState([]);
+    const [activeTab, setActiveTab] = useState(tabs[0]);
 
     useEffect(() => {
-        fetchUsers();
-    }, []);
+        getUsers();
+    }, [activeTab]);
 
-    const fetchUsers = async () => {
+    const getUsers = async () => {
         try {
-            const response = await threel_api.post('/display');
-            setData(response.data.artists);
-            setResult(response.data.artists);
+            const response = await threel_api.post(routePrefix);
+
+            const freshUsers = response.data.users;
+
+            setUsers(freshUsers);
+            setResult(activeTab.filter(freshUsers));
         } catch (error) {
-            console.error('Error fetching artists:', error);
+            console.error('Error fetching users: ', error);
         }
     };
 
     const verifyArtist = async (id) => {
-        const response = await threel_api.post(`/verify-artist/{${id}}`);
+        try {
+            const response = await threel_api.post(routePrefix + `/verify-to-artist/${id}`);
 
-    };
-    const banUser = async (id) => {
+            const updatedUsers = response.data.users;
 
+            setUsers(updatedUsers);
+            setResult(activeTab.filter(updatedUsers));
+        } catch (error) {
+            console.log("Error while verifying user: " + error);
+        }
     };
-    const unbanUser = async (id) => {
 
+    const deactivateUser = async (id) => {
+        try {
+            const response = await threel_api.post(routePrefix + `/deactivate/${id}`);
+
+            const updatedUsers = response.data.users;
+
+            console.log(activeTab);
+
+            setUsers(updatedUsers);
+            setResult(activeTab.filter(updatedUsers));
+        } catch (error) {
+            console.log("Error while deactivating user: " + error);
+        }
     };
+
+    const activateUser = async (id) => {
+        try {
+            const response = await threel_api.post(routePrefix + `/activate/${id}`);
+
+            const updatedUsers = response.data.users;
+
+            console.log(activeTab);
+
+            setUsers(updatedUsers);
+            setResult(activeTab.filter(updatedUsers));
+        } catch (error) {
+            console.log("Error while activating user: " + error);
+        }
+    };
+
     const deleteUser = async (id) => {
-        
-    };
-    const updateUser = async (id) => {
+        // set a confirmation modal here
+        try {
+            const response = await threel_api.post(routePrefix + `/delete/${id}`);
 
+            const updatedUsers = response.data.users;
+
+            setUsers(updatedUsers);
+            setResult(activeTab.filter(updatedUsers));
+        } catch (error) {
+            console.log("Error while deleting user: " + error);
+        }
+    };
+
+    const updateUser = async (id) => {
+        // update logic here
     };
 
     const value = useMemo(
         () => ({
-            verifyArtist,
+            users,
+            result,
+            setResult,
+            activeTab,
+            setActiveTab,
+            tabs,
         }),
-        []
+        [users, result, activeTab]
     );
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
 export const useUser = () => {
-    return useContext(UserContext);
+    const context = useContext(UserContext);
+    return context;
 };

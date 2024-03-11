@@ -15,6 +15,7 @@ import PublicRoute from './components/Route/PublicRoute';
 
 import { AuthProvider } from "./hooks/useAuth";
 import { ArtistProvider } from './hooks/useArtist';
+import { UserProvider } from './hooks/useUser';
 
 
 
@@ -23,6 +24,7 @@ function App() {
     <Router>
       <AuthProvider>
       <ArtistProvider>
+      <UserProvider>
         <Routes>
           <Route index element={<Listener content={'explore'}/>} />
           <Route path="/register" element={<PublicRoute><Register/></PublicRoute>} />
@@ -48,6 +50,7 @@ function App() {
           } />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+      </UserProvider>
       </ArtistProvider>
       </AuthProvider>
     </Router>
