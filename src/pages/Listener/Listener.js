@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+
 import ListenerHeader from '../../components/Information/ListenerHeader';
 import ListenerSidebar from '../../components/Navigation/ListenerSidebar';
 import UploadModal from '../../components/Information/UploadModal';
 
 import ListenerExplore from './ListenerExplore';
+import ListenerPlayer from './ListenerPlayer';
 
 
 import { useAuth } from "../../hooks/useAuth";
@@ -15,7 +18,8 @@ const Listener = ({ content }) => {
     const { uploadModal } = useArtist();
 
     return (
-        <>
+        <div>
+            <ToastContainer />
             <UploadModal
                 action={uploadModal.action}
                 title={uploadModal.title}
@@ -33,10 +37,11 @@ const Listener = ({ content }) => {
                     <div className='listener-content'>
                         {content === 'explore' && <ListenerExplore />}
                         {content === 'search' && <ListenerExplore />}
+                        {content === 'play' && <ListenerPlayer />}
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

@@ -28,6 +28,10 @@ const ListenerSidebar = () => {
             if (isLoggedOut) {
                 setLogoutText("Logout");
                 navigate(home)
+                toast.info("Successfully logged out.", {
+                    position: 'bottom-left',
+                    autoClose: 3000,
+                });
             }
         }).catch(() => {
             setLogoutText("Logout");

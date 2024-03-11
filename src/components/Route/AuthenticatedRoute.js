@@ -1,8 +1,7 @@
 import {Navigate} from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
 import { useAuth } from "../../hooks/useAuth";
 
-const ProtectedRoute = ({ children }) => {
+const AdminRoute = ({ children }) => {
     const { user, home } = useAuth();
 
     if (!user) {
@@ -11,10 +10,9 @@ const ProtectedRoute = ({ children }) => {
     
     return (
         <>
-            <ToastContainer/>
             {children}
         </>
     );
 };
 
-export default ProtectedRoute;
+export default AdminRoute;

@@ -8,14 +8,15 @@ import Login from './pages/Authentication/LoginPage';
 import Register from './pages/Authentication/RegisterPage';
 import NotFoundPage from './pages/Others/PageNotFound';
 import Admin from './pages/Admin/Admin';
-import Listener from './pages/Listeners/Listener';
+import Listener from './pages/Listener/Listener';
 
-import ProtectedRoute from "./components/Route/ProtectedRoute";
+import AdminRoute from './components/Route/AdminRoute';
 import PublicRoute from './components/Route/PublicRoute';
 
 import { AuthProvider } from "./hooks/useAuth";
 import { ArtistProvider } from './hooks/useArtist';
 import { UserProvider } from './hooks/useUser';
+import { ItemProvider } from './hooks/useItem';
 
 
 
@@ -25,12 +26,14 @@ function App() {
       <AuthProvider>
       <ArtistProvider>
       <UserProvider>
+      <ItemProvider>
         <Routes>
           <Route index element={<Listener content={'explore'}/>} />
+          <Route path="/play" element={<Listener content={'play'}/>} /> 
           <Route path="/register" element={<PublicRoute><Register/></PublicRoute>} />
           <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
           <Route path="/admin/*" element={
-            <ProtectedRoute>
+            <AdminRoute>
               <Routes>
                 <Route path="dashboard" element={<Admin content={'dashboard'} />} />
                 <Route path="listeners/*" element={
@@ -46,10 +49,11 @@ function App() {
                 <Route path="pricing" element={<Admin content={'pricing'} />} />
                 <Route path="*" element={<Admin content={'not_found'} />} />
               </Routes>
-            </ProtectedRoute>
+            </AdminRoute>
           } />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+      </ItemProvider>
       </UserProvider>
       </ArtistProvider>
       </AuthProvider>

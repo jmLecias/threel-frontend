@@ -4,27 +4,36 @@ import Button from 'react-bootstrap/Button';
 
 import { MdOutlineImageSearch } from "react-icons/md";
 
-import { useArtist } from "../../hooks/useArtist";
+import { useAuth } from "../../hooks/useAuth";
 
 const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
-    const { upload, setUpload } = useArtist();
 
-    const [selectedThumbnail, setSelectedThumbnail] = useState(null);
-    const [selectedContent, setSelectedContent] = useState(null);
+    const { user } = useAuth();
 
-    const handleThumbnailChange = (event) => {
+    const [upload, setUpload] = useState({
+        uploadType: 1,
+        userId: user.id,
+        title: '',
+        description: '',
+        cover: null,
+        content: null,
+    });
+
+    const handleCoverChange = (event) => {
         const file = event.target.files[0];
-        setSelectedThumbnail(file);
+        setUpload(prev => ({
+            ...prev,
+            cover: file,
+        }));
     };
 
     const handleContentChange = (event) => {
         const file = event.target.files[0];
-        setSelectedContent(file);
+        setUpload(prev => ({
+            ...prev,
+            content: file,
+        }));
     };
-
-    const handleUpload = () => {
-        
-    }
 
     return (
         <Modal
@@ -48,14 +57,25 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
                             className='form-control mb-4'
                             type="text"
                             placeholder="Title"
-                            onChange={() => { }}
+                            value={upload.title}
+                            onChange={(event) => {
+                                setUpload((prev) => ({
+                                    ...prev,
+                                    title: event.target.value,
+                                }))
+                            }}
                         />
                         <textarea
                             className='form-control mb-4 h-50'
-                            placeholder="Description"
-                            onChange={() => { }}
+                            value={upload.description}
+                            onChange={(event) => {
+                                setUpload((prev) => ({
+                                    ...prev,
+                                    description: event.target.value,
+                                }))
+                            }}
                         />
-                        <span className="text-black">Select your {upload.type}:</span>
+                        <span className="text-black">Select your {upload.uploadType}:</span>
                         <input
                             className='form-control  mt-4'
                             type="file"
@@ -65,15 +85,15 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
                     </div>
                     <div className="w-50">
                         <div className="upload-thumbnail-container">
-                            {!upload.thumbnail && !selectedThumbnail && (
+                            {!upload.cover && (
                                 <div className="d-flex flex-column align-items-center">
                                     <MdOutlineImageSearch size={100} />
-                                    Select a thumbnail for your {upload.type}
+                                    Select a thumbnail for your {upload.uploadType}
                                 </div>
                             )}
-                            {selectedThumbnail && (
+                            {upload.cover && (
                                 <img
-                                    src={URL.createObjectURL(selectedThumbnail)}
+                                    src={URL.createObjectURL(upload.cover)}
                                     alt="Thumbnail Preview"
                                     className="img-fluid"
                                 />
@@ -83,7 +103,7 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
                             className='form-control  mt-4'
                             type="file"
                             accept=".jpg, .jpeg, .png"
-                            onChange={handleThumbnailChange}
+                            onChange={handleCoverChange}
                         />
                     </div>
 
@@ -93,12 +113,32 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
             <Modal.Footer>
                 <Button
                     variant="secondary"
-                    onClick={onClose}
+                    onClick={() => {
+                        onClose();
+                        setUpload({
+                            uploadType: 1,
+                            userId: user.id,
+                            title: '',
+                            description: '',
+                            cover: null,
+                            content: null,
+                        });
+                    }}
                 >{close}</Button>
                 {action !== '' && (
                     <Button
                         variant="danger"
-                        onClick={onAction}
+                        onClick={() => {
+                            onAction(upload);
+                            // setUpload({
+                            //     uploadType: 1,
+                            //     userId: user.id,
+                            //     title: '',
+                            //     description: '',
+                            //     cover: null,
+                            //     content: null,
+                            // });
+                        }}
                     >{action}</Button>
                 )}
             </Modal.Footer>

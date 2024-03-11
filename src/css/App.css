@@ -20,6 +20,9 @@
   --background-opacity-color: #00000080;
   --container-padding: 20px;
   --container-border-radius: 10px;
+  --container-padding: 1.5em;
+  --player-side-background-color: rgba(45, 45, 45, 0.4);
+  /* --player-side-background-color: rgba(98, 98, 98, 0.34); */
 }
 
 * {
@@ -817,22 +820,15 @@ header {
 }
 
 .listener-container {
+  height: 100%;
+  width: 100%;
   display: flex;
+  flex-direction: row;
 }
 
 .listener-content {
   width: 100%;
-  height: 90vh;
-  padding: 1.5em;
-  overflow: auto;
-}
-
-.listener-content::-webkit-scrollbar {
-  width: 5px;
-}
-
-.listener-content::-webkit-scrollbar-thumb {
-  background-color: #e3e1e14d;
+  height: 100%;
 }
 
 .h-list-grid {
@@ -874,9 +870,29 @@ header {
   height: 100%;
   display: grid;
   grid-template-columns: minmax(500px, 1fr);
-  grid-template-rows: 5% 35px minmax(600px, 1fr);
+  grid-template-rows: 10% 35px 1fr;
   grid-auto-flow: column;
-  grid-gap: 1rem 0;
+  overflow-y: auto;
+}
+
+.listener-dashboard-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.listener-dashboard-grid::-webkit-scrollbar-thumb {
+  background-color: #e3e1e14d;
+}
+
+.listener-dashboard-head {
+  padding: var(--container-padding);
+}
+
+.listener-dashboard-search {
+  padding: 0 var(--container-padding);
+}
+
+.listener-dashboard-content {
+  padding: 0 var(--container-padding);
 }
 
 .threel-item {
@@ -886,6 +902,7 @@ header {
   flex-direction: column;
   border-radius: 12px;
   height: 100%;
+  cursor: pointer;
 }
 
 .threel-item:hover {
@@ -897,6 +914,7 @@ header {
   height: 80%;
   border-radius: 10px;
   background-color: #D9D9D9;
+  overflow: hidden;
 }
 
 .threel-item-title {
@@ -904,11 +922,13 @@ header {
   font-weight: bold;
   font-size: 14px;
   margin-top: 10px;
+  padding: 0px 5px;
 }
 
 .threel-item-artist {
   color: var(--text-color);
   font-size: 12px;
+  padding: 0px 5px;
   opacity: 0.4;
 }
 
@@ -934,7 +954,6 @@ header {
   border: 1px solid #c5c4c4;
 }
 
-
 .upload-dropdown {
   background-color: var(--background-input-color);
   color: #ffffffab;
@@ -958,4 +977,50 @@ header {
 .upload-dropdown-text {
   font-size: 15px;
   margin-left: 10px;
+}
+
+.listener-player-grid {
+  color: var(--text-color);
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(400px, calc(100vw * 0.7)) minmax(300px, calc(100vw * 0.3));
+  grid-template-rows: 1fr;
+  grid-auto-flow: column;
+  grid-gap: 0;
+}
+
+.player-main {
+  padding: var(--container-padding);
+  width: 100%;
+  height: 100%;
+
+}
+
+.player-side {
+  padding: var(--container-padding);
+  background-color: var(--player-side-background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.player-main-content {
+  width: 100%;
+  height: calc(100% - 30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-cover { 
+  width: calc(100vh * 0.5);
+  aspect-ratio: 1 / 1;
+  background-color: var(--text-input-color);
+  border-radius: var(--container-border-radius);
+  overflow: hidden;
+}
+
+.player-controls { 
+  width: 90%;
+  margin-top: 50px;
 }

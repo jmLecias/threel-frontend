@@ -7,7 +7,7 @@ import { FaVideo } from "react-icons/fa";
 import { useArtist } from '../../hooks/useArtist';
 
 const UploadDropdown = ({ icon }) => {
-    const { setUpload, setUploadModal } = useArtist();
+    const { setUploadModal } = useArtist();
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -15,7 +15,6 @@ const UploadDropdown = ({ icon }) => {
         setIsOpen(false);
 
         setUploadModal(prev => ({...prev,show: true}));
-        setUpload(prev => ({...prev, type: type}));
 
         switch(type) {
             case 1:

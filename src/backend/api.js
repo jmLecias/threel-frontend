@@ -3,9 +3,11 @@ import StorageService from '../services/StorageService';
 
 const ss = new StorageService();
 
+const threelApiBaseUrl = 'http://localhost:8000/api';
+
 const threel_api = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:8000/api'
+    baseURL: threelApiBaseUrl,
 });
 
 const refreshToken = async () => {
@@ -61,3 +63,4 @@ threel_api.interceptors.response.use(
 );
 
 export default threel_api;
+export { threelApiBaseUrl };
