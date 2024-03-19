@@ -43,6 +43,11 @@ threel_api.interceptors.request.use(
 threel_api.interceptors.response.use(
     response => response,
     async error => {
+        if(error.response.status === 401 ) {
+            ss.removeItem('access_token');
+            ss.removeItem('user');
+        }
+
         const originalRequest = error.config;
 
         // if (error.response.status === 401 && !originalRequest._retry) {

@@ -1,15 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import UploadDropdown from './UploadDropdown';
+import UploadDropdown from '../Uploads/UploadDropdown';
 
 import { TiUpload } from "react-icons/ti";
 import { IoNotifications } from "react-icons/io5";
 
+import { useAuth } from '../../hooks/useAuth';
+
 const ListenerHeader = ({ isLoggedIn }) => {
 
+    const {user} = useAuth();
+
     return (
-        <header>
+        <header className=''>
             <span className='logo-text'>THREEL</span>
 
             {!isLoggedIn && (
@@ -23,12 +27,14 @@ const ListenerHeader = ({ isLoggedIn }) => {
                 </div>
             ) || (
                 <div className='d-flex align-items-center'>
-                    <UploadDropdown icon={
-                        <TiUpload
-                            size={24} 
-                            title='Upload'
-                        />
-                    } />
+                    {user.user_type >= 2 && (
+                        <UploadDropdown icon={
+                            <TiUpload
+                                size={24} 
+                                title='Upload'
+                            />
+                        } />
+                    )}
                     <div className='header-icons'>
                         <IoNotifications 
                             size={24} 

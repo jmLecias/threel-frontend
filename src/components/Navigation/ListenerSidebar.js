@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarFooter, SidebarHeader, SidebarContent } from 'react-pro-sidebar';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 
@@ -15,6 +15,7 @@ import { SiApplepodcasts } from "react-icons/si";
 import { FaUserCircle } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FiLogOut } from "react-icons/fi";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const ListenerSidebar = () => {
     const { user, logout, home } = useAuth();
@@ -44,32 +45,40 @@ const ListenerSidebar = () => {
     }
 
     return (
-        <ProSidebar>
+        <ProSidebar hidden={false}>
             <SidebarContent>
                 <SidebarHeader>
                     <Menu>
-                        <MenuItem icon={ <MdOutlineExplore size={25} />}>
+                        <MenuItem icon={<MdOutlineExplore size={25} />}>
                             <Link to="/"><span className='explore-text'>EXPLORE</span></Link>
                         </MenuItem>
                     </Menu>
                 </SidebarHeader>
                 <Menu >
                     {user && (
-                        <MenuItem icon={<MdLibraryMusic size={20} />}><Link to="/admin/listeners">My Playlists</Link></MenuItem>
+                        <MenuItem icon={<MdLibraryMusic size={20} />}><Link to="/">My Playlists</Link></MenuItem>
                     )}
-                    <MenuItem icon={<SiApplepodcasts size={20} />}><Link to="">Podcasts</Link></MenuItem>
-                    <MenuItem icon={<FaVideo size={20} />}><Link to="">Videocasts</Link></MenuItem>
-                    <MenuItem icon={<IoMusicalNotes size={20} />}><Link to="">Songs</Link></MenuItem>
+                    <MenuItem icon={<SiApplepodcasts size={20} />}><Link to="/">Podcasts</Link></MenuItem>
+                    <MenuItem icon={<FaVideo size={20} />}><Link to="/">Videocasts</Link></MenuItem>
+                    <MenuItem icon={<IoMusicalNotes size={20} />}><Link to="/">Songs</Link></MenuItem>
                 </Menu>
             </SidebarContent>
             {user && (
                 <SidebarFooter>
                     <Menu>
                         <SubMenu icon={<FaUserCircle size={25} />} title={user.username}>
+                            {user.user_type >= 3 && (
+                                <MenuItem
+                                    icon={<MdOutlineAdminPanelSettings size={20} />}
+                                >
+                                    <Link to="/admin/dashboard">Admin Interface</Link>
+                                </MenuItem>
+                            )}
                             <MenuItem
                                 icon={<IoSettingsSharp size={20} />}
                                 onClick={() => toast.info("Account Settings")}
                             >Account Settings</MenuItem>
+
                             <MenuItem
                                 icon={<FiLogOut size={20} />}
                                 onClick={handleLogout}

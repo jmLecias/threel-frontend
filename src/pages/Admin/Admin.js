@@ -33,13 +33,13 @@ const Admin = ({ content }) => {
     useEffect(() => {
         const status = urlParams.get('status');
 
-        me().then(() => {
-            if(ss.getItem('user') !== null) {
-                setIsEmailVerified(JSON.parse(ss.getItem('user')).email_verified_at !== null);
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
+        // me().then(() => {
+        //     if(ss.getItem('user') !== null) {
+        //         setIsEmailVerified(JSON.parse(ss.getItem('user')).email_verified_at !== null);
+        //     }
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
 
 
         if (status === 'verification_success') {
@@ -84,7 +84,7 @@ const Admin = ({ content }) => {
                 pauseOnHover: true,
             });
         }
-    }, [me, navigate, ss, urlParams]);
+    }, [ss, urlParams]);
 
     return (
         <div className='admin-container'>

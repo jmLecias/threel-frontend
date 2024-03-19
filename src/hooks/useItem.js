@@ -10,22 +10,34 @@ export const ItemProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const [items, setItems] = useState([]);
-
+    const [genres, setGenres] = useState([]);
 
     useEffect(() => {
         getUploads();
-
-    }, []);
+        getGenres();
+    }, [location]);
 
     const getUploads = async () => {
         try {
             const response = await threel_api.post('/uploads');
 
             const uploads = response.data.uploads;
-            console.log(uploads)
+            
             setItems(uploads);
         } catch (error) {
             console.error('Error fetching uploads: ', error);
+        }
+    };
+
+    const getGenres = async () => {
+        try {
+            const response = await threel_api.post('/genres');
+
+            const genres = response.data.genres;
+            
+            setGenres(genres);
+        } catch (error) {
+            console.error('Error fetching genres: ', error);
         }
     };
 
@@ -34,6 +46,8 @@ export const ItemProvider = ({ children }) => {
         () => ({
             items,
             setItems,
+            genres,
+            getUploads,
         }),
         [items]
     );

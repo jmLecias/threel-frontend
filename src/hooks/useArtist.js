@@ -1,70 +1,125 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate, useLocation } from "react-router-dom";
 import threel_api from "../backend/api";
 
 import { useAuth } from "./useAuth";
+import { useUser } from "./useUser";
 
 const ArtistContext = createContext();
 
 export const ArtistProvider = ({ children }) => {
 
+    const location = useLocation();
+
+    const isExplorePage = location.pathname === '/';
+
     const { user } = useAuth();
+
+    const [artists, setArtists] = useState([]);
+
+    useEffect(() => {
+        getArtists();
+    }, [isExplorePage, location]);
+
 
     const [uploadModal, setUploadModal] = useState({
         show: false,
-        title: '',
+        title: 'Upload',
         close: 'Cancel Upload',
         action: 'Upload',
         onClose: () => {
             setUploadModal(prev => ({ ...prev, show: false }));
         },
-        onAction: (upload) => { 
-            submitUpload(upload); 
+        onAction: (upload) => {
+            submitUpload(upload).then((isUploaded) => {
+                if (isUploaded) {
+                    toast.success("Successfully uploaded!", {
+                        autoClose: 3000,
+                        pauseOnHover: true,
+                    });
+                }
+            }).catch((error) => {
+                toast.error("Error while uploading: " + error, {
+                    autoClose: 3000,
+                    pauseOnHover: true,
+                });
+            });
             setUploadModal(prev => ({ ...prev, show: false }));
         },
     });
 
-    const submitUpload = async (upload) => {
-        console.log(upload);
-
+    const getArtists = async () => {
         try {
-            const credentials = new FormData();
-            credentials.append('title', upload.title);
-            credentials.append('description', upload.description);
-            credentials.append('content', upload.content); // Assuming credentials.content is a File object
-            credentials.append('thumbnail', upload.cover); // Assuming credentials.thumbnail is a File object
-            credentials.append('upload_type', upload.uploadType);
-            credentials.append('user_id', upload.userId);
-        
-            const config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            };
+            const response = await threel_api.post('/artists');
 
-            console.log(credentials);
-    
-            const response = await threel_api.post('/artist/upload', credentials, config);
-    
-            if (response.status === 200) {
-    
-                console.log(response);
-                
-                return true;
-            } else {
-                return false;
-            }
-        } catch(error) {
-            console.log(error);
+            const freshArtists = response.data.artists;
+
+            setArtists(freshArtists);
+        } catch (error) {
+            console.error('Error fetching users: ', error);
+        }
+    }
+
+    const uploadAlbum = async (album) => {
+        const albumData = new FormData();
+        albumData.append('name', album.name);
+        albumData.append('description', album.description);
+        albumData.append('cover', album.cover);
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+
+        const response = await threel_api.post('/artist/upload/album', albumData, config);
+
+        if (response.status === 200) {
+            return response.data.album;
+        } else {
+            return false;
+        }
+    }
+    const uploadSingle = async (upload, album) => {
+        const uploadData = new FormData();
+        uploadData.append('title', upload.title);
+        uploadData.append('description', upload.description);
+        uploadData.append('content', upload.content);
+        uploadData.append('thumbnail', upload.cover);
+        uploadData.append('upload_type', upload.uploadType);
+        uploadData.append('user_id', upload.userId);
+        uploadData.append('duration', upload.duration);
+        uploadData.append('visibility', upload.visibility);
+
+        upload.genres.forEach((genre, index) => {
+            uploadData.append(`genres[${index}][value]`, genre.value);
+            uploadData.append(`genres[${index}][label]`, genre.label);
+        });
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+
+        const response = await threel_api.post('/artist/upload', uploadData, config);
+
+        if (response.status === 200) {
+            return true;
+        } else {
+            return false;
         }
     }
 
     const value = useMemo(
         () => ({
+            artists,
             uploadModal,
             setUploadModal,
+            uploadSingle,
         }),
-        [uploadModal]
+        [artists, uploadModal]
     );
     return <ArtistContext.Provider value={value}>{children}</ArtistContext.Provider>;
 };

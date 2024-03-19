@@ -15,6 +15,8 @@ export const UserProvider = ({ children }) => {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const isExplorePage = location.pathname === '/'; 
+
     const routePrefix = '/admin/manage-users';
 
     const [users, setUsers] = useState([]);
@@ -96,7 +98,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         getUsers();
-    }, [activeTab]);
+    }, [, activeTab]);
 
     const getUsers = async () => {
         try {
@@ -179,6 +181,7 @@ export const UserProvider = ({ children }) => {
             setResult,
             activeTab,
             setActiveTab,
+            getUsers,
             tabs,
         }),
         [users, result, activeTab]

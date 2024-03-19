@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import AudioPlayer from 'react-h5-audio-player';
 
 import ListenerHeader from '../../components/Information/ListenerHeader';
 import ListenerSidebar from '../../components/Navigation/ListenerSidebar';
-import UploadModal from '../../components/Information/UploadModal';
+import UploadModal from '../../components/Uploads/UploadModal';
 
 import ListenerExplore from './ListenerExplore';
 import ListenerPlayer from './ListenerPlayer';
@@ -39,6 +40,16 @@ const Listener = ({ content }) => {
                         {content === 'search' && <ListenerExplore />}
                         {content === 'play' && <ListenerPlayer />}
                     </div>
+                </div>
+
+                <div className='player-controls'>
+                    {/* <AudioPlayer
+                        autoPlay
+                        src={''}
+                        onPlay={e => { }}
+                        showSkipControls={true}
+                        showJumpControls={true}
+                    /> */}
                 </div>
             </div>
         </div>

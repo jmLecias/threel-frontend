@@ -2,53 +2,22 @@ import React from 'react';
 
 import HorizontalList from '../../components/Information/HorizontalList';
 import ThreelItem from '../../components/Information/ThreelItem';
-import ThreelArtist from '../../components/Information/ThreelArtist';
 
 import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
 
 import { useNavigate } from 'react-router-dom';
 import { useItem } from '../../hooks/useItem';
-import { useArtist } from '../../hooks/useArtist';
 
-const ListenerExplore = () => {
+const ListenerArtist = () => {
 
     const { items } = useItem();
-    const { artists } = useArtist();
 
     const navigate = useNavigate();
 
     const breadcrumbs = [
-        { label: 'Explore', link: '/' }
+        { label: 'Explore', link: '/' },
+        { label: 'Artist', link: '/' }
     ]
-
-    const renderItems = () => {
-        const itemsArr = [];
-        items.map((item) => {
-            itemsArr.push(
-                <ThreelItem
-                    key={item.id}
-                    item={item}
-                    width={155}
-                    onClick={() => navigate("/play", { state: { item: item } })}
-                />
-            );
-        });
-        return itemsArr;
-    };
-
-    const renderArtists = () => {
-        const artistsArr = [];
-        artists.map((artist) => {
-            artistsArr.push(
-                <ThreelArtist
-                    key={artist.id}
-                    artist={artist}
-                    onClick={() => {}}
-                />
-            );
-        });
-        return artistsArr;
-    }
 
     const renderThreelItems = (count, width) => {
         const items = [];
@@ -106,17 +75,7 @@ const ListenerExplore = () => {
             </div>
             <div className='listener-dashboard-content'>
                 <br />
-                <HorizontalList title="ARTISTS">
-                    {renderArtists()}
-                </HorizontalList>
                 <HorizontalList title="SONGS">
-                    {renderItems()}
-                    {renderThreelItems(10, 155)}
-                </HorizontalList>
-                <HorizontalList title="VIDEOCASTS">
-                    {renderThreelItems(10, 200)}
-                </HorizontalList>
-                <HorizontalList title="PODCASTS">
                     {renderThreelItems(10, 155)}
                 </HorizontalList>
                 <br />
@@ -125,4 +84,4 @@ const ListenerExplore = () => {
     )
 }
 
-export default ListenerExplore;
+export default ListenerArtist;

@@ -5,6 +5,9 @@ import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
 
 import { BiArrowToLeft, BiArrowToRight, BiSolidChevronLeft, BiSolidChevronRight } from "react-icons/bi";
 
+import { FaHeadphonesAlt, FaMusic, FaUserShield, FaShieldAlt } from "react-icons/fa";
+
+
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../hooks/useUser';
 
@@ -58,13 +61,41 @@ const AdminManageListeners = () => {
         },
         {
             name: 'Type',
-            selector: row => row.user_type.user_type,
             sortable: true,
+            selector: row => row.user_type.user_type,
+            cell: row => {
+                const userType = row.user_type.user_type;
+                const size = 14;
+                var icon;
+
+                switch (userType) {
+                    case 'listener':
+                        icon = <FaHeadphonesAlt size={size} />
+                        break;
+                    case 'artist':
+                        icon = <FaMusic size={size} />
+                        break;
+                    case 'admin':
+                        icon = <FaUserShield size={size} />
+                        break;
+                    case 'superadmin':
+                        icon = <FaShieldAlt size={size} />
+                        break;
+                }
+                return (
+                    <TypeContainer icon={icon} type={userType} />
+                )
+            }
         },
         {
             name: 'Status',
-            selector: row => row.status_type.status_type,
             sortable: true,
+            selector: row => row.status_type.status_type,
+            cell: row => {
+                return (
+                    <StatusContainer status={row.status_type.status_type} />
+                )
+            }
         },
         {
             name: 'Actions',
@@ -128,6 +159,23 @@ const AdminManageListeners = () => {
         }
     };
 
+    const StatusContainer = ({ status }) => {
+        return (
+            <div className={`status ${status}`}>
+                <span>{status}</span>
+            </div>
+        )
+    }
+
+    const TypeContainer = ({ icon, type }) => {
+        return (
+            <div className={`user-type ${type}`}>
+                {icon}
+                <span>{type}</span>
+            </div>
+        )
+    }
+
 
 
     return (
@@ -137,7 +185,7 @@ const AdminManageListeners = () => {
             </div>
 
             <div className='d-flex justify-content-between'>
-                <ContentTabs/>
+                <ContentTabs />
                 <input
                     className='form-control w-25'
                     type="text"

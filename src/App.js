@@ -1,4 +1,5 @@
 import React from 'react';
+import "react-h5-audio-player/src/styles.scss"; 
 import './css/App.css';
 import 'chart.js/auto'; // VERY IMPORTANT
 import 'react-pro-sidebar/dist/css/styles.css'; // VERY IMPORTANT
@@ -24,8 +25,8 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-      <ArtistProvider>
       <UserProvider>
+      <ArtistProvider>
       <ItemProvider>
         <Routes>
           <Route index element={<Listener content={'explore'}/>} />
@@ -54,8 +55,8 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ItemProvider>
-      </UserProvider>
       </ArtistProvider>
+      </UserProvider>
       </AuthProvider>
     </Router>
   );
