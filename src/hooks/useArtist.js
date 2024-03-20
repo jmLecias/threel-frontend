@@ -31,20 +31,7 @@ export const ArtistProvider = ({ children }) => {
         onClose: () => {
             setUploadModal(prev => ({ ...prev, show: false }));
         },
-        onAction: (upload) => {
-            submitUpload(upload).then((isUploaded) => {
-                if (isUploaded) {
-                    toast.success("Successfully uploaded!", {
-                        autoClose: 3000,
-                        pauseOnHover: true,
-                    });
-                }
-            }).catch((error) => {
-                toast.error("Error while uploading: " + error, {
-                    autoClose: 3000,
-                    pauseOnHover: true,
-                });
-            });
+        onAction: () => {
             setUploadModal(prev => ({ ...prev, show: false }));
         },
     });
@@ -66,6 +53,7 @@ export const ArtistProvider = ({ children }) => {
         albumData.append('name', album.name);
         albumData.append('description', album.description);
         albumData.append('cover', album.cover);
+        albumData.append('user_id', album.userId);
 
         const config = {
             headers: {
@@ -81,7 +69,8 @@ export const ArtistProvider = ({ children }) => {
             return false;
         }
     }
-    const uploadSingle = async (upload, album) => {
+
+    const uploadSingle = async (upload) => {
         const uploadData = new FormData();
         uploadData.append('title', upload.title);
         uploadData.append('description', upload.description);
@@ -89,6 +78,7 @@ export const ArtistProvider = ({ children }) => {
         uploadData.append('thumbnail', upload.cover);
         uploadData.append('upload_type', upload.uploadType);
         uploadData.append('user_id', upload.userId);
+        uploadData.append('album_id', upload.albumId);
         uploadData.append('duration', upload.duration);
         uploadData.append('visibility', upload.visibility);
 
@@ -118,6 +108,7 @@ export const ArtistProvider = ({ children }) => {
             uploadModal,
             setUploadModal,
             uploadSingle,
+            uploadAlbum,
         }),
         [artists, uploadModal]
     );

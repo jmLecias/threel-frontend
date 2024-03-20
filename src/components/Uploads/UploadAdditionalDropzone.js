@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import Button from 'react-bootstrap/Button';
+import { toast } from 'react-toastify';
 
 import { FaUpload } from "react-icons/fa";
 
@@ -8,15 +9,30 @@ import { GiNuclearBomb } from "react-icons/gi";
 
 const UploadAdditionalDropzone = ({ onFileDrop }) => {
 
+    const handleDrop = (acceptedFiles) => {
+        acceptedFiles.forEach(file => {
+            if (!file.type.startsWith('audio/')) {
+                toast.error(`File "${file.name}" was rejected because it is not an audio file.`, {
+                    autoClose: 3000,
+                    position: 'top-center'
+                });
+            }
+        });
+
+        const audioFiles = acceptedFiles.filter(file => file.type.startsWith('audio/'));
+
+        onFileDrop(audioFiles);
+    };
+
     return (
 
         <Dropzone
-            onDrop={(acceptedFiles) => onFileDrop(acceptedFiles)}
+            onDrop={(acceptedFiles) => handleDrop(acceptedFiles)}
         >
             {({ getRootProps, getInputProps, isDragActive }) => (
                 <div
                     {...getRootProps({})}
-                    className="upload-additional-dropzone"
+                    className={`upload-additional-dropzone ${(isDragActive)? 'active' : ''}`}
                 >
                     <input {...getInputProps()} />
                     <div className="upload-dropzone-content">

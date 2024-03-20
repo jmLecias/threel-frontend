@@ -6,12 +6,18 @@ import AudioPlayer from 'react-h5-audio-player';
 
 import ThreelBreadcrumbs from '../../components/Navigation/ThreelBreadcrumbs';
 
-const ListenerPlayer = ({ }) => {
+const ListenerPlayer = ({}) => {
     const location = useLocation();
     const item = location.state.item;
 
-    const thumbnailPath = item.thumbnail;
-    const thumbnailFile = thumbnailPath.split('/').pop();
+    var thumbnailFile ;
+    if (!item.thumbnail) {
+        const thumbnailPath = item.album.cover;
+        thumbnailFile = thumbnailPath.split('/').pop();
+    } else {
+        const thumbnailPath = item.thumbnail;
+        thumbnailFile = thumbnailPath.split('/').pop();
+    }
 
     const contentPath = item.content;
     const contentFile = contentPath.split('/').pop();
@@ -37,7 +43,7 @@ const ListenerPlayer = ({ }) => {
                     <div className='player-cover'>
                         {item.thumbnail !== "" && (
                             <img
-                                src={`${threelApiBaseUrl}/thumbnail/${thumbnailFile}`}
+                                src={`${threelApiBaseUrl}/cover/${thumbnailFile}`}
                                 alt={`${item.title} cover`}
                                 height={'100%'}
                                 width={'100%'}

@@ -615,6 +615,8 @@ header {
 }
 
 .threel-item .play-circle {
+  background-color: #1e1e1e;
+  border-radius: 100%;
   color: #f53535;
   position: absolute;
   right: 1em;
@@ -656,6 +658,7 @@ header {
   width: 100%;
   object-fit: cover;
 }
+
 .upload-cover-dropzone {
   display: flex;
   flex-direction: column;
@@ -665,6 +668,9 @@ header {
   width: 100%;
 }
 
+.upload-cover-dropzone.active {
+  background-color: #ffffff37;
+}
 .upload-dropdown {
   background-color: var(--background-input-color);
   color: #ffffffab;
@@ -706,6 +712,10 @@ header {
   justify-content: center;
 }
 
+.upload-container.active {
+  background-color: #ffffff37;
+}
+
 .upload-additional-dropzone {
   height:  100%;
   width: 100%;
@@ -717,6 +727,10 @@ header {
   overflow: hidden;
   border: 3px dashed #c5c4c4aa;
   padding: 5em;
+}
+
+.upload-additional-dropzone.active {
+  background-color: #ffffff37;
 }
 
 
@@ -767,8 +781,19 @@ header {
   height: min-content;
   margin-bottom: 1em;
   padding: 1em;
-  background-color: #ffffff08;
+  background-color: #ffffff0b;
   border-radius: 10px;
+}
+
+.upload-album-item .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.upload-album-item .details {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
 }

@@ -13,43 +13,47 @@ import { useItem } from "../../hooks/useItem";
 const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
 
     const { getUploads } = useItem();
-    const { uploadSingle } = useArtist();
+    const { uploadSingle, uploadAlbum } = useArtist();
 
     const [isUploading, setIsUploading] = useState(false);
     const [uploadDetails, setUploadDetails] = useState(null);
     const [albumDetails, setAlbumDetails] = useState(null);
 
-    const handleDetailsChange = (upload) => {
-        console.log('Upload Modal: ')
-        console.log(upload[0])
+    const handleDetailsChange = (upload, album) => {
         setUploadDetails(upload);
-        // setAlbumDetails(album);
+        if (album) {
+            setAlbumDetails(album);
+        }
     }
 
     const validateUploadDetails = (uploadDetails) => {
-        if (uploadDetails.length > 1) {
+        if (uploadDetails.length === 0) {
+            return false;
+        } else if (uploadDetails.length > 1) {
             if (!albumDetails.name || !albumDetails.description || !albumDetails.cover) {
                 return false;
             }
 
             for (const uploadDetail of uploadDetails) {
+                if (uploadDetail.title === '') {
+                    return false;
+                }
+
                 if (uploadDetail.genres.length === 0) {
                     return false;
                 }
             }
-
-        } else if (uploadDetails.length > 0 && uploadDetails.length < 2) {
-            return true;
         }
 
         return true;
     };
 
     const handleSubmit = () => {
-        setIsUploading(true);
+        console.log(albumDetails);
+        // setIsUploading(true);
 
         if (!validateUploadDetails(uploadDetails)) {
-            toast.error('Please check your album upload details.', {
+            toast.error('Please complete your album upload details.', {
                 autoClose: 3000,
                 position: 'top-center',
             });
@@ -57,44 +61,69 @@ const UploadModal = ({ show, title, close, action, onClose, onAction }) => {
             return;
         }
 
-        uploadSingle(uploadDetails[0]).then((success) => {
-            if (success) {
-                getUploads();
-                toast.success(' Uploaded successfully!', {
+        if (albumDetails === null) {
+            uploadSingle(uploadDetails[0]).then((success) => {
+                if (success) {
+                    getUploads();
+                    toast.success(uploadDetails[0].title + ' was uploaded successfully!', {
+                        autoClose: 3000,
+                    });
+                    handleClose();
+                }
+            }).catch((e) => {
+                console.log(e)
+                toast.error(`Error while uploading song`, {
+                    autoClose: 3000,
+                    position: 'bottom-center',
+                });
+            })
+        }
+        else {
+            uploadAlbum(albumDetails).then((album) => {
+                const albumUploads = uploadDetails.map((upload) => ({
+                    ...upload,
+                    albumId: album.id
+                }));
+
+                albumUploads.forEach((upload) => {
+                    console.log(upload);
+                    uploadSingle(upload).then((success) => {
+                        if (success) {
+                            getUploads();
+                        }
+                    }).catch((e) => {
+                        toast.error(`Error while uploading ` + upload.title, {
+                            autoClose: 3000,
+                            position: 'bottom-center',
+                        });
+                    })
+                })
+
+                toast.success(album.name + ' was uploaded successfully!', {
                     autoClose: 3000,
                 });
+
                 handleClose();
-            }
-        }).catch((e) => {
-            console.log(e)
-            toast.error(`Error while uploading song`, {
-                autoClose: 3000,
-                position: 'bottom-center',
-            });
-        })
+            }).catch((e) => {
+                console.log(e)
+                toast.error(`Error while creating the album`, {
+                    autoClose: 3000,
+                    position: 'bottom-center',
+                });
+            })
+        }
+
     }
 
     const handleDrop = (acceptedFiles) => {
-        acceptedFiles.forEach(file => {
-            if (!file.type.startsWith('audio/')) {
-                toast.error(`File "${file.name}" was rejected because it is not an audio file.`, {
-                    autoClose: 3000,
-                    position: 'top-center'
-                });
-            }
-        });
-
-        const audioFiles = acceptedFiles.filter(file => file.type.startsWith('audio/'));
-
-
-        if (audioFiles.length > 0 && audioFiles.length < 2) {
+        if (acceptedFiles.length === 1) {
             setModalBody(
-                <UploadDetailsSingle file={audioFiles[0]} onChange={handleDetailsChange} />
+                <UploadDetailsSingle file={acceptedFiles[0]} onChange={handleDetailsChange} />
             );
             setShowFooter(true);
-        } else if (audioFiles.length > 0 && audioFiles.length > 1) {
+        } else if (acceptedFiles.length > 1) {
             setModalBody(
-                <UploadDetailsAlbum files={audioFiles} onChange={handleDetailsChange} />
+                <UploadDetailsAlbum files={acceptedFiles} onChange={handleDetailsChange} />
             );
             setShowFooter(true);
         }

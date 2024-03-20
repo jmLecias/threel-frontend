@@ -5,8 +5,14 @@ import { FaCirclePlay } from "react-icons/fa6";
 
 const ThreelItem = ({ item, width, onClick }) => {
 
-    const filePath = item.thumbnail;
-    const filename = filePath.split('/').pop();
+    var filename ;
+    if (!item.thumbnail) {
+        const filePath = item.album.cover;
+        filename = filePath.split('/').pop();
+    } else {
+        const filePath = item.thumbnail;
+        filename = filePath.split('/').pop();
+    }
 
     // var albumCover;
     // var albumCoverFilename;
@@ -23,7 +29,7 @@ const ThreelItem = ({ item, width, onClick }) => {
             <div className='threel-item-cover box-shadow mx-auto my-auto'>
                 {item.thumbnail !== "" && (
                     <img
-                        src={`${threelApiBaseUrl}/thumbnail/${filename}`}
+                        src={`${threelApiBaseUrl}/cover/${filename}`}
                         alt={`${item.title} cover`}
                     />
                 )}
@@ -42,7 +48,7 @@ const ThreelItem = ({ item, width, onClick }) => {
             </div>
             <span className='threel-item-title'>{item.title}</span>
             <span className='threel-item-artist'>{item.user.username}</span>
-                <FaCirclePlay className='play-circle box-shadow' size={40}/>
+            <FaCirclePlay className='play-circle box-shadow' size={40} />
         </div>
     )
 }

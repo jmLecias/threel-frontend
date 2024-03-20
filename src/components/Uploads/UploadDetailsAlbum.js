@@ -30,6 +30,7 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
                     key: index,
                     uploadType: 1,
                     userId: user.id,
+                    albumId: null,
                     title: file.name.substring(0, file.name.lastIndexOf('.')),
                     description: '',
                     cover: null,
@@ -43,29 +44,15 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
         return mappedAlbumData;
     }
 
-    const handleCoverChange = (acceptedFiles) => {
-        if (acceptedFiles.length > 1) {
-            toast.error(`Too many files. Please select only one cover photo.`, {
-                autoClose: 3000,
-                position: 'top-center'
-            });
-            return;
-        }
+    const handleCoverChange = (imageFile) => {
+        setcoverPreview(
+            <img src={URL.createObjectURL(imageFile)} alt="Cover Preview" title={`${imageFile.path} Change?`} />
+        );
 
-        if (acceptedFiles[0].type.startsWith('image/')) {
-            setcoverPreview(
-                <img src={URL.createObjectURL(acceptedFiles[0])} alt="Cover Preview" title={acceptedFiles[0].path} />
-            );
-            setAlbum(prev => ({
-                ...prev,
-                cover: acceptedFiles[0],
-            }));
-        } else {
-            toast.error(`Invalid file. Please select an image file as a cover photo.`, {
-                autoClose: 3000,
-                position: 'top-center'
-            });
-        }
+        setAlbum(prev => ({
+            ...prev,
+            cover: imageFile,
+        }));
     };
 
     const [coverPreview, setcoverPreview] = useState(<UploadCoverDropzone onImageDrop={handleCoverChange} />);
@@ -74,12 +61,11 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
         name: '',
         description: '',
         cover: null,
+        userId: user.id,
     })
 
     useEffect(() => {
         onChange(albumItems, album);
-        console.log(albumItems);
-        console.log(album);
     }, [albumItems, album]);
 
     const handleLoadedMetadata = (key, duration) => {
@@ -122,12 +108,13 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
 
 
     const renderAlbumItems = () => {
-        console.log(albumItems);
+        // console.log(albumItems);
         const mappedAlbumItems = []
-        albumItems.map((item) => {
+        albumItems.map((item, index) => {
             mappedAlbumItems.push(
                 <AlbumItem
                     key={item.key}
+                    index={index + 1}
                     item={item}
                     onTitleChange={(value) => { handleTitleChange(item.key, value) }}
                     onDescriptionChange={(value) => { handleDescriptionChange(item.key, value) }}
@@ -143,24 +130,9 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
     }
 
     const handleDrop = (acceptedFiles) => {
-        acceptedFiles.forEach(file => {
-            if (!file.type.startsWith('audio/')) {
-                toast.error(`File "${file.name}" was rejected because it is not an audio file.`, {
-                    autoClose: 3000,
-                    position: 'top-center'
-                });
-            }
-        });
-
-        const audioFiles = acceptedFiles.filter(file => file.type.startsWith('audio/'));
-
-        const newAudioFiles = audioFiles.filter(file =>
-            !albumItems.some(item => item.content.path === file.path)
-        );
-
         setAlbumItems(currentAlbumItems => ([
             ...currentAlbumItems,
-            ...mapAlbumData(newAudioFiles)
+            ...mapAlbumData(acceptedFiles)
         ]))
     };
 
@@ -169,13 +141,13 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
             <div className="upload-details">
                 <div className="d-flex">
                     <div style={{ width: '70%', paddingRight: '1em' }}>
+                        <div className="fs-6 fw-normal opacity-50 mb-2">{albumItems.length} Songs</div>
                         {renderAlbumItems()}
-
                         <div>
                             <UploadAdditionalDropzone onFileDrop={handleDrop} />
                         </div>
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                     </div>
                     <div style={{ width: '30%' }}>
                         <div className="fs-6 fw-normal opacity-50 mb-2">Album Cover</div>
@@ -188,14 +160,14 @@ const UploadDetailsAlbum = ({ files, onChange }) => {
                             type="text"
                             placeholder="Name"
                             value={album.name}
-                            onChange={(event) => {setAlbum(prev => ({...prev, name: event.target.value}))}}
+                            onChange={(event) => { setAlbum(prev => ({ ...prev, name: event.target.value })) }}
                         />
                         <textarea
                             className='form-control mb-2'
-                            style={{height: '10%'}}
+                            style={{ height: '8%' }}
                             value={album.description}
                             placeholder="Description"
-                            onChange={(event) => {setAlbum(prev => ({...prev, description: event.target.value}))}}
+                            onChange={(event) => { setAlbum(prev => ({ ...prev, description: event.target.value })) }}
                         />
                         <div>
                             <span className="small fw-light opacity-50 mb-3">Total Size</span><br />

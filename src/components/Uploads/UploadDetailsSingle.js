@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
-import { toast } from 'react-toastify';
 
 import Select from 'react-select';
 
@@ -22,30 +21,15 @@ const UploadDetailsSingle = ({ file, onChange }) => {
         return mapped;
     }
 
-    const handleCoverChange = (acceptedFiles) => {
-        if (acceptedFiles.length > 1) {
-            toast.error(`Too many files. Please select only one cover photo.`, {
-                autoClose: 3000,
-                position: 'top-center'
-            });
-            return;
-        }
+    const handleCoverChange = (imageFile) => {
+        setUpload(prev => ({
+            ...prev,
+            cover: imageFile,
+        }));
 
-        if (acceptedFiles[0].type.startsWith('image/')) {
-            setUpload(prev => ({
-                ...prev,
-                cover: acceptedFiles[0],
-            }));
-
-            setcoverPreview(
-                <img src={URL.createObjectURL(acceptedFiles[0])} alt="Cover Preview" />
-            )
-        } else {
-            toast.error(`Invalid file. Please select an image file as a cover photo.`, {
-                autoClose: 3000,
-                position: 'top-center'
-            });
-        }
+        setcoverPreview(
+            <img src={URL.createObjectURL(imageFile)} alt="Cover Preview" title={`${imageFile.path} Change?`} />
+        )
     };
 
     const [duration, setDuration] = useState(0);
@@ -58,16 +42,22 @@ const UploadDetailsSingle = ({ file, onChange }) => {
         description: '',
         cover: null,
         content: file,
-        duration: duration,
+        duration: 0,
         visibility: 2,
         genres: [],
+        albumId: null,
     });
 
     useEffect(() => {
-        onChange([upload]);
-        console.log('Upload Single Details: ')
-        console.log([upload])
-    }, [upload])
+        onChange([upload], null);
+    }, [upload]);
+
+    useEffect(() => {
+        setUpload(prev => ({
+            ...prev,
+            duration: duration,
+        }));
+    }, [duration]);
 
     const handleSelectChange = (genres) => {
         setUpload(prev => ({
@@ -153,7 +143,7 @@ const UploadDetailsSingle = ({ file, onChange }) => {
                         />
                     </div>
                     <div style={{ width: '35%' }}>
-                        <div className="fs-6 fw-normal opacity-50 mb-2">Album Cover</div>
+                        <div className="fs-6 fw-normal opacity-50 mb-2">Cover Photo</div>
                         <div className="upload-thumbnail-container">
                             {coverPreview}
                         </div>
@@ -164,7 +154,7 @@ const UploadDetailsSingle = ({ file, onChange }) => {
                             <span className="small fw-light opacity-50">Filename</span><br />
                             <span className="small opacity-75">{file.path}</span>
                         </div>
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center mb-5">
                             <div className="me-5">
                                 <span className="small fw-light opacity-50">Size</span><br />
                                 <span className="small opacity-75">{(file.size / 1049000).toPrecision(2)} mb</span>

@@ -77,6 +77,15 @@ const ListenerExplore = () => {
                     artist_verified_at: null,
                     user_type: 3,
                     status_type: 1
+                },
+                album: {
+                    id: 52,
+                    name: "John Mark",
+                    description: "Artist",
+                    cover: "",
+                    email: "jmlecias18@gmail.com",
+                    created_at: "2024-03-06T01:01:25.000000Z",
+                    updated_at: "2024-03-06T01:01:25.000000Z",
                 }
             };
             items.push(
